@@ -14,3 +14,4 @@ const kAssignmentOptionStyle = TextStyle(
 const kSubtitleStyle = TextStyle(
   fontSize: 17.0,
 );
+const kOrangeMarkerColor = Color(0xFFF28608);
