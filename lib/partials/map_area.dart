@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 import '../constants.dart';
 
@@ -38,13 +39,12 @@ class _MapAreaState extends State<MapArea> {
           MarkerLayerOptions(
             markers: [
               Marker(
-                point: infoWindow.getOffsetLatLng(),
-                builder: (context) {
-                  return InfoWindow(parentLatLng: LatLng(51.5, -0.09));
-                },
-                width: 200,
-                height: 150
-              ),
+                  point: infoWindow.getOffsetLatLng(),
+                  builder: (context) {
+                    return InfoWindow(parentLatLng: LatLng(51.5, -0.09));
+                  },
+                  width: 200,
+                  height: 150),
               if (!showInfoWindow)
                 Marker(
                   point: LatLng(51.5, -0.09),
@@ -87,10 +87,23 @@ class InfoWindow extends StatefulWidget {
 }
 
 class _InfoWindowState extends State<InfoWindow> {
+  var slider = CarouselSlider(
+          items: <Widget>[
+            Text('Page 1'),
+            Text('Page 2'),
+          ],
+        );
+
   @override
   Widget build(BuildContext context) {
     return Container(
       color: kOrangeMarkerColor,
+      child: MaterialButton(
+        onPressed: () {
+          slider.nextPage(duration: Duration(milliseconds: 500), curve: Curves.easeIn);
+        },
+        child: slider
+      ),
     );
   }
 }
