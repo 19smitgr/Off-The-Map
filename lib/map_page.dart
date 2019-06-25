@@ -14,8 +14,8 @@ class MapPage extends StatelessWidget {
         child: Column(
           children: <Widget>[
             NavigationBar(),
-            MapArea(),
-            InfoFooter(),
+            Expanded(child: MapArea()),
+            Expanded(child: InfoFooter()),
           ],
         ),
       ),
