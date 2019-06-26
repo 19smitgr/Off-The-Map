@@ -9,6 +9,13 @@ class TitleYearInputScreen extends StatefulWidget {
 }
 
 class _TitleYearInputScreenState extends State<TitleYearInputScreen> {
+  TextEditingController researchYearsController = new TextEditingController();
+  List<String> researchYears = [];
+
+  TextEditingController titleController = new TextEditingController();
+  String title = 'The origins of college ';
+  bool editingTitle = false;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -19,26 +26,89 @@ class _TitleYearInputScreenState extends State<TitleYearInputScreen> {
           child: ListView(
             children: <Widget>[
               Text('Title your findings'),
-              Row(
-                children: <Widget>[
-                  Flexible(child: TextField()),
-                  Text('Save'),
-                ],
-              ),
+              if (editingTitle)
+                Row(
+                  children: <Widget>[
+                    Flexible(
+                      child: TextField(
+                        controller: titleController,
+                      ),
+                    ),
+                    FlatButton(
+                      child: Text('Save', style: kAssignmentOptionStyle),
+                      onPressed: () {
+                        title = titleController.text;
+
+                        if (title.length > 0) {
+                          editingTitle = false;
+                          setState(() {});
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              if (!editingTitle)
+                Row(
+                  children: <Widget>[
+                    Text('Title: ',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    Expanded(
+                        child: Text(title,
+                            style: TextStyle(fontStyle: FontStyle.italic))),
+                    FlatButton(
+                      child: Text('Edit', style: kAssignmentOptionStyle),
+                      onPressed: () {
+                        editingTitle = true;
+                        titleController.text = title;
+                        setState(() {});
+                      },
+                    ),
+                  ],
+                ),
               SizedBox(height: 15.0),
               Text('What year(s) does your research come from?'),
               Row(
                 children: <Widget>[
-                  Flexible(child: TextField()),
-                  Text('Add'),
+                  Flexible(
+                    child: TextField(
+                      controller: researchYearsController,
+                    ),
+                  ),
+                  FlatButton(
+                    child: Text('Add', style: kAssignmentOptionStyle),
+                    onPressed: () {
+                      String year = researchYearsController.text;
+
+                      if (year.length > 0) {
+                        researchYears.add(year);
+                        researchYearsController.text = '';
+                        setState(() {});
+                      }
+                    },
+                  ),
                 ],
               ),
+              Wrap(children: [
+                Text(
+                  'Years Added: ',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text(researchYears.join(', '))
+              ]),
               SizedBox(height: 15.0),
               Text('Add Media:'),
               Row(
                 children: <Widget>[
-                  Expanded(child: Center(child: MediaUploadButton(Icons.chat, 'Text'))),
-                  Expanded(child: Center(child: MediaUploadButton(Icons.image, 'Image'))),
+                  Expanded(
+                    child: Center(
+                      child: MediaUploadButton(Icons.chat, 'Text'),
+                    ),
+                  ),
+                  // Expanded(
+                  //   child: Center(
+                  //     child: MediaUploadButton(Icons.image, 'Image'),
+                  //   ),
+                  // ),
                 ],
               ),
             ],

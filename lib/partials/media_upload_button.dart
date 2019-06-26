@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:off_the_map/partials/text_editor.dart';
 
 import '../constants.dart';
 
@@ -19,7 +20,7 @@ class _MediaUploadButtonState extends State<MediaUploadButton> {
   Widget build(BuildContext context) {
     return FlatButton(
       onPressed: () {
-        print('working');
+        Navigator.push(context, MaterialPageRoute(builder: (context) => TextEditor()));
       },
       child: Column(
         children: <Widget>[
