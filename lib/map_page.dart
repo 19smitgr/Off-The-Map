@@ -17,7 +17,6 @@ class MapPage extends StatelessWidget {
         body: SafeArea(
           child: Consumer<FooterController>(
             builder: (context, footerController, child) { 
-              print('hello there.');
               return Column(
                   children: <Widget>[
                     NavigationBar(),
