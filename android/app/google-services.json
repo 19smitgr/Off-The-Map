@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "192290382563",
+    "firebase_url": "https://off-the-map.firebaseio.com",
+    "project_id": "off-the-map",
+    "storage_bucket": "off-the-map.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:192290382563:android:cbd9c5bf7c55e019",
+        "android_client_info": {
+          "package_name": "com.OffTheMap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "192290382563-hd7nf677lro8vca7ni6566kl7eev3oe4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAr0wHtEUDhoPYCSKVgsLTPbWhQJjNdTA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "192290382563-hd7nf677lro8vca7ni6566kl7eev3oe4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

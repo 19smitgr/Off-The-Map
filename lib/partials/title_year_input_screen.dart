@@ -13,8 +13,8 @@ class _TitleYearInputScreenState extends State<TitleYearInputScreen> {
   List<String> researchYears = [];
 
   TextEditingController titleController = new TextEditingController();
-  String title = 'The origins of college ';
-  bool editingTitle = false;
+  String title = '';
+  bool editingTitle = true;
 
   @override
   Widget build(BuildContext context) {
@@ -100,9 +100,7 @@ class _TitleYearInputScreenState extends State<TitleYearInputScreen> {
               Row(
                 children: <Widget>[
                   Expanded(
-                    child: Center(
-                      child: MediaUploadButton(Icons.chat, 'Text'),
-                    ),
+                    child: MediaUploadButton(Icons.chat, 'Text'),
                   ),
                   // Expanded(
                   //   child: Center(
