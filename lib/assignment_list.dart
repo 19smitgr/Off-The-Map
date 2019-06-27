@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:off_the_map/constants.dart';
+import 'package:off_the_map/map_page.dart';
 
 class AssignmentList extends StatefulWidget {
   @override
@@ -89,10 +90,29 @@ class _AssignmentWithOptionsState extends State<AssignmentWithOptions> {
               alignment: WrapAlignment.spaceBetween,
               children: <Widget>[
                 for (String option in options)
-                  Text(
-                    option,
-                    style: kAssignmentOptionStyle,
-                  ),
+                  if (option == 'Work on Assignment')
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MapPage(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        option,
+                        style: kAssignmentOptionStyle,
+                      ),
+                    )
+                  else
+                    FlatButton(
+                      onPressed: () {},
+                      child: Text(
+                        option,
+                        style: kAssignmentOptionStyle,
+                      ),
+                    )
               ],
             ),
           ),

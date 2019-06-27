@@ -48,6 +48,9 @@ class TextEditorState extends State<TextEditor> {
           FlatButton(
             onPressed: () {
               print(json.encode(_controller.document));
+
+              
+
               Navigator.pop(context);
             },
             child: Text('DONE', style: TextStyle(color: Colors.white)),

@@ -12,7 +12,7 @@ class InfoWindow extends StatefulWidget {
   // TODO: find a better way to do this exactly and make sure it works on different screen sizes
   static const offsetFromMarker = Offset(0.01, 0.002);
 
-  final List<String> buttonCaptionsByPage = ['See Instructions', 'Close'];
+  final List<String> buttonCaptionsByPage = ['See Instructions', 'Save and Close'];
 
   final LatLng parentLatLng;
 

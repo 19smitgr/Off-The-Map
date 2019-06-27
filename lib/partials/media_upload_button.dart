@@ -3,11 +3,14 @@ import 'package:off_the_map/partials/text_editor.dart';
 
 import '../constants.dart';
 
+typedef Widget BuildMediaView(BuildContext context);
+
 class MediaUploadButton extends StatefulWidget {
   final IconData iconData;
   final String caption;
+  final BuildMediaView buildMediaView;
 
-  MediaUploadButton(this.iconData, this.caption);
+  MediaUploadButton(this.iconData, this.caption, this.buildMediaView);
 
   @override
   _MediaUploadButtonState createState() => _MediaUploadButtonState();
@@ -20,7 +23,7 @@ class _MediaUploadButtonState extends State<MediaUploadButton> {
   Widget build(BuildContext context) {
     return FlatButton(
       onPressed: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => TextEditor()));
+        Navigator.push(context, MaterialPageRoute(builder: widget.buildMediaView));
       },
       child: Column(
         children: <Widget>[

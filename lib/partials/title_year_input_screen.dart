@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:off_the_map/partials/story.dart';
+import 'package:off_the_map/partials/text_editor.dart';
 
 import '../constants.dart';
 import 'media_upload_button.dart';
@@ -9,11 +11,11 @@ class TitleYearInputScreen extends StatefulWidget {
 }
 
 class _TitleYearInputScreenState extends State<TitleYearInputScreen> {
+  Story story = Story();
+
   TextEditingController researchYearsController = new TextEditingController();
-  List<String> researchYears = [];
 
   TextEditingController titleController = new TextEditingController();
-  String title = '';
   bool editingTitle = true;
 
   @override
@@ -37,9 +39,9 @@ class _TitleYearInputScreenState extends State<TitleYearInputScreen> {
                     FlatButton(
                       child: Text('Save', style: kAssignmentOptionStyle),
                       onPressed: () {
-                        title = titleController.text;
+                        story.title = titleController.text;
 
-                        if (title.length > 0) {
+                        if (story.title.length > 0) {
                           editingTitle = false;
                           setState(() {});
                         }
@@ -53,13 +55,16 @@ class _TitleYearInputScreenState extends State<TitleYearInputScreen> {
                     Text('Title: ',
                         style: TextStyle(fontWeight: FontWeight.bold)),
                     Expanded(
-                        child: Text(title,
-                            style: TextStyle(fontStyle: FontStyle.italic))),
+                      child: Text(
+                        story.title,
+                        style: TextStyle(fontStyle: FontStyle.italic),
+                      ),
+                    ),
                     FlatButton(
                       child: Text('Edit', style: kAssignmentOptionStyle),
                       onPressed: () {
                         editingTitle = true;
-                        titleController.text = title;
+                        titleController.text = story.title;
                         setState(() {});
                       },
                     ),
@@ -72,15 +77,17 @@ class _TitleYearInputScreenState extends State<TitleYearInputScreen> {
                   Flexible(
                     child: TextField(
                       controller: researchYearsController,
+                      keyboardType: TextInputType.number,
                     ),
                   ),
                   FlatButton(
                     child: Text('Add', style: kAssignmentOptionStyle),
                     onPressed: () {
-                      String year = researchYearsController.text;
+                      int year = int.parse(researchYearsController.text);
 
-                      if (year.length > 0) {
-                        researchYears.add(year);
+                      if (year != null) {
+                        story.researchYears.add(year);
+                        
                         researchYearsController.text = '';
                         setState(() {});
                       }
@@ -93,21 +100,26 @@ class _TitleYearInputScreenState extends State<TitleYearInputScreen> {
                   'Years Added: ',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                Text(researchYears.join(', '))
+                Text(story.researchYears.join(', '))
               ]),
               SizedBox(height: 15.0),
               Text('Add Media:'),
               Row(
                 children: <Widget>[
-                  Expanded(
-                    child: MediaUploadButton(Icons.chat, 'Text'),
+                  MediaUploadButton(
+                    Icons.chat,
+                    'Text',
+                    (context) => TextEditor(),
                   ),
-                  // Expanded(
-                  //   child: Center(
-                  //     child: MediaUploadButton(Icons.image, 'Image'),
-                  //   ),
-                  // ),
                 ],
+              ),
+              RaisedButton(
+                color: Color(0xFF93639A),
+                onPressed: () {},
+                child: Text(
+                  'SAVE AND CLOSE',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ],
           ),
