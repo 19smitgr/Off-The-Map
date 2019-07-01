@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:off_the_map/constants.dart';
-import 'package:off_the_map/partials/title_year_input_screen.dart';
 
 class InfoFooter extends StatelessWidget {
+  final Widget child;
+
   const InfoFooter({
     Key key,
+    this.child,
   }) : super(key: key);
 
   @override
@@ -13,7 +15,7 @@ class InfoFooter extends StatelessWidget {
       duration: Duration(milliseconds: 500),
       color: kGrayBackgroundColor,
       padding: EdgeInsets.all(15.0),
-      child: TitleYearInputScreen(),
+      child: child,
     );
   }
 }

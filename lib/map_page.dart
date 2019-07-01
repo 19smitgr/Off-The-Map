@@ -3,6 +3,7 @@ import 'package:off_the_map/footer_controller.dart';
 import 'package:off_the_map/partials/info_footer.dart';
 import 'package:off_the_map/partials/map_area.dart';
 import 'package:off_the_map/partials/navigation_bar.dart';
+import 'package:off_the_map/partials/title_year_input_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'constants.dart';
@@ -16,17 +17,20 @@ class MapPage extends StatelessWidget {
         backgroundColor: kDarkBlueBackground,
         body: SafeArea(
           child: Consumer<FooterController>(
-            builder: (context, footerController, child) { 
-              return Column(
-                  children: <Widget>[
-                    NavigationBar(),
-                    Expanded(child: MapArea()),
-                    if (footerController.extended)
-                      Expanded(child: InfoFooter()),
-                  ],
-                );
-            }
-          ),
+              builder: (context, footerController, child) {
+            return Column(
+              children: <Widget>[
+                NavigationBar(),
+                Expanded(child: MapArea()),
+                if (footerController.extended)
+                  Expanded(
+                    child: InfoFooter(
+                      child: TitleYearInputScreen(),
+                    ),
+                  ),
+              ],
+            );
+          }),
         ),
       ),
     );
