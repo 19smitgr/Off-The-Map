@@ -1,10 +1,14 @@
-class Story {
-  String title = '';
-  List<int> researchYears = [];
-  String text = '';
-  DateTime dateWritten = DateTime.now();
+import 'package:flutter/material.dart';
+import 'package:latlong/latlong.dart';
 
-  void setTitle(title) => this.title = title;
-  void addToResearchYears(year) => this.researchYears.add(year);
-  void setText(text) => this.text = text;
+class Story {
+  String title;
+  List<int> researchYears;
+  String text;
+  DateTime dateWritten = DateTime.now();
+  LatLng latLng;
+
+  Story({this.title = '', this.researchYears = const [], this.text = '', this.dateWritten, this.latLng}) {
+    dateWritten = DateTime.now();
+  }
 }

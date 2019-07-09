@@ -11,8 +11,7 @@ class InfoFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: Duration(milliseconds: 500),
+    return Container(
       color: kGrayBackgroundColor,
       padding: EdgeInsets.all(15.0),
       child: child,

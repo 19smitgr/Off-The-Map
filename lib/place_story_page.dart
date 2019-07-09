@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:off_the_map/partials/text_editor.dart';
+import 'package:off_the_map/place_story.dart';
 
 import 'constants.dart';
 
@@ -40,7 +41,10 @@ class _PlaceStoryPageState extends State<PlaceStoryPage> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.only(
-                        left: 16.0, right: 16.0, top: 4.0),
+                      left: 16.0,
+                      right: 16.0,
+                      top: 4.0,
+                    ),
                     child: RaisedButton(
                       onPressed: () {},
                       color: Color(0xFF93639A), // purple
@@ -55,7 +59,10 @@ class _PlaceStoryPageState extends State<PlaceStoryPage> {
                         left: 16.0, right: 16.0, top: 4.0),
                     child: RaisedButton(
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => TextEditor()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TextEditor()));
                       },
                       color: Color(0xFF93639A), // purple
                       child: Text(
@@ -70,39 +77,6 @@ class _PlaceStoryPageState extends State<PlaceStoryPage> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class PlaceStory extends StatefulWidget {
-  @override
-  _PlaceStoryState createState() => _PlaceStoryState();
-}
-
-class _PlaceStoryState extends State<PlaceStory> {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            Text('Garrett Smith —', style: kBoldText),
-            Text('June 26th'),
-          ],
-        ),
-        Text(
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod pretium dignissim. Vestibulum eu luctus augue. Sed convallis nibh ut turpis mollis, sed euismod dui porttitor. Vivamus faucibus orci turpis, egestas pellentesque sapien tempor nec. Ut neque nisi, commodo et lectus at, laoreet porta justo. Sed pharetra velit eu nibh tempor dapibus.'),
-        Divider(),
-        Row(
-          children: <Widget>[
-            IconButton(onPressed: () {}, icon: Icon(Icons.location_on)),
-            SizedBox(width: 5.0,),
-            IconButton(onPressed: () {}, icon: Icon(Icons.thumb_up)),
-            SizedBox(width: 5.0,),
-            IconButton(onPressed: () {}, icon: Icon(Icons.chat)),
-          ],
-        ),
-      ],
     );
   }
 }

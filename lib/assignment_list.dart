@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:off_the_map/constants.dart';
-import 'package:off_the_map/map_page.dart';
+import 'package:off_the_map/student_view_map_page.dart';
 
 class AssignmentList extends StatefulWidget {
   @override
@@ -96,7 +96,7 @@ class _AssignmentWithOptionsState extends State<AssignmentWithOptions> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => MapPage(),
+                            builder: (context) => StudentViewMapPage(),
                           ),
                         );
                       },
