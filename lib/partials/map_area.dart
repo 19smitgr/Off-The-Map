@@ -25,6 +25,19 @@ class _MapAreaState extends State<MapArea> {
 
   @override
   Widget build(BuildContext context) {
+    List<InfoWindowMarker> infoWindowMarkers = [];
+
+    for (Story story in stories) {
+      var infoWindowMarker = InfoWindowMarker(
+        infoWindow: widget.infoWindowFactory
+            .generateInstructionsCarousel(title: story.title),
+        latLng: story.latLng,
+      );
+
+      infoWindowMarkers.add(infoWindowMarker);
+      InfoWindowMarker.infoWindowMarkers.add(infoWindowMarker);
+    }
+
     return FlutterMap(
       options: MapOptions(
         center: LatLng(35.758584, -83.972536),
@@ -42,12 +55,10 @@ class _MapAreaState extends State<MapArea> {
         ),
         MarkerLayerOptions(
           markers: [
-            for (Story story in stories)
-              ...InfoWindowMarker(
-                infoWindow: widget.infoWindowFactory
-                    .generateInstructionsCarousel(title: story.title),
-                latLng: story.latLng,
-              ).getInfoWindowMarker(),
+            // an infoWindowMarker consists of the infowindow and its anchor marker
+            //this adds both to the marker list
+            for (InfoWindowMarker infoWindowMarker in infoWindowMarkers)
+              ...infoWindowMarker.getInfoWindowMarker(),
           ],
         ),
       ],

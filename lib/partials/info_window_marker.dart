@@ -10,6 +10,8 @@ enum InfoWindowVisibility { VISIBLE, HIDDEN }
 
 /// includes marker and infowindow
 class InfoWindowMarker {
+  static List<InfoWindowMarker> infoWindowMarkers = [];
+
   final LatLng latLng;
   final LatLng infoWindowLatLng;
 
@@ -43,6 +45,12 @@ class InfoWindowMarker {
     return latLng;
   }
 
+  void closeAllInfoWindows() {
+    for (InfoWindowMarker infoWindowMarker in InfoWindowMarker.infoWindowMarkers) {
+      infoWindowMarker.infoWindowVisibilityController.add(InfoWindowVisibility.HIDDEN);
+    }
+  }
+
   /// returns pair of markers that represents the infoWindowMarker
   List<Marker> getInfoWindowMarker() {
     return [
@@ -55,7 +63,6 @@ class InfoWindowMarker {
             initialData: InfoWindowVisibility.HIDDEN,
             stream: infoWindowVisibilityController.stream,
             builder: (context, snapshot) {
-              print('pl0x');
               bool visible = snapshot.data == InfoWindowVisibility.VISIBLE ? true : false;
               return Visibility(visible: visible, child: infoWindow);
             },
@@ -70,9 +77,9 @@ class InfoWindowMarker {
         point: latLng,
         builder: (ctx) => GestureDetector(
               onTap: () {
+                closeAllInfoWindows();
                 infoWindowVisibilityController
                     .add(InfoWindowVisibility.VISIBLE);
-                print('lint');
               },
               child: Container(
                 child: Icon(
