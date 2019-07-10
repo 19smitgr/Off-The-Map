@@ -13,10 +13,6 @@ import 'package:provider/provider.dart';
 import 'constants.dart';
 import 'current_story_controller.dart';
 
-// what I want to do: when I click on the marker part of an infowindowmarker,
-// I want the currentStory to change to that marker's story.
-// but in order for that to happen, the marker has to have a Story as an instance variable
-// and in order
 class StudentViewMapPage extends StatelessWidget {
   List<Story> stories = [
     Story(title: 'College Hill Park', latLng: LatLng(35.758584, -83.972536)),

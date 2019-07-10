@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong/latlong.dart';
 import 'package:off_the_map/partials/info_footer.dart';
 import 'package:off_the_map/partials/map_area.dart';
-
-import 'constants.dart';
 
 class ExploreMapPage extends StatefulWidget {
   @override
@@ -30,9 +26,7 @@ class _ExploreMapPageState extends State<ExploreMapPage> {
             Expanded(
               child: InfoFooter(
                 child: Column(
-                  children: <Widget>[
-                    
-                  ],
+                  children: <Widget>[],
                 ),
               ),
             ),
