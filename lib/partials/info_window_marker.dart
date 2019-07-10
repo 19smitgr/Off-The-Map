@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
+import 'package:off_the_map/current_story_controller.dart';
+import 'package:off_the_map/partials/story.dart';
+import 'package:provider/provider.dart';
 
 import '../constants.dart';
 
@@ -12,7 +15,9 @@ enum InfoWindowVisibility { VISIBLE, HIDDEN }
 class InfoWindowMarker {
   static List<InfoWindowMarker> infoWindowMarkers = [];
 
-  final LatLng latLng;
+  // all InfoWindowMarkers will be associated with a Story
+  Story story;
+
   final LatLng infoWindowLatLng;
 
   /// widget that builds the infowindow
@@ -25,10 +30,11 @@ class InfoWindowMarker {
   /// every InfoWindowMarker has custom tap behavior
   bool performMarkerAction = false;
 
-  var infoWindowVisibilityController = StreamController<InfoWindowVisibility>.broadcast();
+  var infoWindowVisibilityController =
+      StreamController<InfoWindowVisibility>.broadcast();
 
-  InfoWindowMarker({@required this.latLng, this.infoWindow})
-      : infoWindowLatLng = getOffsetLatLng(latLng);
+  InfoWindowMarker({this.infoWindow, this.story})
+      : infoWindowLatLng = getOffsetLatLng(story.latLng);
 
   /// this will prevent memory leaks from the streamController `infoWindowVisibility`
   void dispose() {
@@ -45,9 +51,11 @@ class InfoWindowMarker {
     return latLng;
   }
 
-  void closeAllInfoWindows() {
-    for (InfoWindowMarker infoWindowMarker in InfoWindowMarker.infoWindowMarkers) {
-      infoWindowMarker.infoWindowVisibilityController.add(InfoWindowVisibility.HIDDEN);
+  static void closeAllInfoWindows() {
+    for (InfoWindowMarker infoWindowMarker
+        in InfoWindowMarker.infoWindowMarkers) {
+      infoWindowMarker.infoWindowVisibilityController
+          .add(InfoWindowVisibility.HIDDEN);
     }
   }
 
@@ -57,13 +65,13 @@ class InfoWindowMarker {
       Marker(
         point: infoWindowLatLng,
         builder: (context) {
-
           // when other marker is tapped, this will rebuild and make infowindow visible
           return StreamBuilder(
             initialData: InfoWindowVisibility.HIDDEN,
             stream: infoWindowVisibilityController.stream,
             builder: (context, snapshot) {
-              bool visible = snapshot.data == InfoWindowVisibility.VISIBLE ? true : false;
+              bool visible =
+                  snapshot.data == InfoWindowVisibility.VISIBLE ? true : false;
               return Visibility(visible: visible, child: infoWindow);
             },
           );
@@ -74,12 +82,18 @@ class InfoWindowMarker {
         height: 165,
       ),
       Marker(
-        point: latLng,
+        point: story.latLng,
         builder: (ctx) => GestureDetector(
               onTap: () {
-                closeAllInfoWindows();
+                InfoWindowMarker.closeAllInfoWindows();
                 infoWindowVisibilityController
                     .add(InfoWindowVisibility.VISIBLE);
+                var stories = Provider.of<List<Story>>(ctx);
+                for (Story story in stories) {
+                  if (story.title == this.story.title) {
+                    Provider.of<CurrentStoryController>(ctx).currentStory = story;
+                  }
+                }
               },
               child: Container(
                 child: Icon(

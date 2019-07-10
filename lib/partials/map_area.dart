@@ -4,6 +4,7 @@ import 'package:latlong/latlong.dart';
 import 'package:off_the_map/partials/info_window_marker.dart';
 import 'package:off_the_map/partials/story.dart';
 import 'package:off_the_map/student_view_map_page.dart';
+import 'package:provider/provider.dart';
 
 class MapArea extends StatefulWidget {
   /// when a marker on the map is tapped, this is what will popup above the marker
@@ -16,22 +17,16 @@ class MapArea extends StatefulWidget {
 }
 
 class _MapAreaState extends State<MapArea> {
-  List<Story> stories = [
-    Story(title: 'College Hill Park', latLng: LatLng(35.758584, -83.972536)),
-    Story(title: 'Maryville College', latLng: LatLng(35.759, -83.972536)),
-    Story(title: 'Municipal Building', latLng: LatLng(35.758584, -83.973)),
-    Story(title: 'House Cafe', latLng: LatLng(35.759, -83.973))
-  ];
-
   @override
   Widget build(BuildContext context) {
+    var stories = Provider.of<List<Story>>(context);
+
     List<InfoWindowMarker> infoWindowMarkers = [];
 
     for (Story story in stories) {
       var infoWindowMarker = InfoWindowMarker(
-        infoWindow: widget.infoWindowFactory
-            .generateInstructionsCarousel(title: story.title),
-        latLng: story.latLng,
+        infoWindow: widget.infoWindowFactory.generateInfoWindowTemplate(story: story),
+        story: story
       );
 
       infoWindowMarkers.add(infoWindowMarker);

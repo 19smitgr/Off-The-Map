@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:off_the_map/partials/story.dart';
+import 'package:off_the_map/current_story_controller.dart';
+import 'package:off_the_map/partials/info_window_marker.dart';
 import 'package:off_the_map/partials/text_editor.dart';
+import 'package:provider/provider.dart';
 
 import '../constants.dart';
+import '../footer_controller.dart';
 import 'media_upload_button.dart';
 
 class TitleYearInputScreen extends StatefulWidget {
@@ -11,8 +14,6 @@ class TitleYearInputScreen extends StatefulWidget {
 }
 
 class _TitleYearInputScreenState extends State<TitleYearInputScreen> {
-  Story story = Story();
-
   TextEditingController researchYearsController = new TextEditingController();
 
   TextEditingController titleController = new TextEditingController();
@@ -20,9 +21,12 @@ class _TitleYearInputScreenState extends State<TitleYearInputScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var currentStoryController = Provider.of<CurrentStoryController>(context);
+    var story = currentStoryController.currentStory;
+
     return Column(
       children: <Widget>[
-        Text('College Hill Park', style: kHeader),
+        Text(story.title, style: kHeader),
         SizedBox(height: 15.0),
         Flexible(
           child: ListView(
@@ -87,7 +91,7 @@ class _TitleYearInputScreenState extends State<TitleYearInputScreen> {
 
                       if (year != null) {
                         story.researchYears.add(year);
-                        
+
                         researchYearsController.text = '';
                         setState(() {});
                       }
@@ -115,7 +119,13 @@ class _TitleYearInputScreenState extends State<TitleYearInputScreen> {
               ),
               RaisedButton(
                 color: Color(0xFF93639A),
-                onPressed: () {},
+                onPressed: () {
+                  // toggle whether footer is visible
+                  var footerController = Provider.of<FooterController>(context);
+                  footerController.extended = !footerController.extended;
+
+                  InfoWindowMarker.closeAllInfoWindows();
+                },
                 child: Text(
                   'SAVE AND CLOSE',
                   style: TextStyle(color: Colors.white),

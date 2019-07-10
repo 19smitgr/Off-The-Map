@@ -1,50 +1,75 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:latlong/latlong.dart';
 import 'package:off_the_map/footer_controller.dart';
+import 'package:off_the_map/info_window_template_widget.dart';
 import 'package:off_the_map/partials/info_footer.dart';
 import 'package:off_the_map/partials/map_area.dart';
 import 'package:off_the_map/partials/navigation_bar.dart';
+import 'package:off_the_map/partials/story.dart';
 import 'package:off_the_map/partials/title_year_input_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'constants.dart';
+import 'current_story_controller.dart';
 
+// what I want to do: when I click on the marker part of an infowindowmarker,
+// I want the currentStory to change to that marker's story.
+// but in order for that to happen, the marker has to have a Story as an instance variable
+// and in order
 class StudentViewMapPage extends StatelessWidget {
+  List<Story> stories = [
+    Story(title: 'College Hill Park', latLng: LatLng(35.758584, -83.972536)),
+    Story(title: 'Maryville College', latLng: LatLng(35.759, -83.972536)),
+    Story(title: 'Municipal Building', latLng: LatLng(35.758584, -83.973)),
+    Story(title: 'House Cafe', latLng: LatLng(35.759, -83.973))
+  ];
+
+  CurrentStoryController currentStoryController = CurrentStoryController();
+
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<FooterController>(
-      builder: (context) => FooterController(),
-      child: Scaffold(
-        backgroundColor: kDarkBlueBackground,
-        body: SafeArea(
-          child: Consumer<FooterController>(
-              builder: (context, footerController, child) {
-            return Column(
-              children: <Widget>[
-                NavigationBar(),
-                Expanded(
-                  child: MapArea(
-                    infoWindowFactory: InstructionsCarouselFactory(),
-                  ),
-                ),
-                if (footerController.extended)
-                  Expanded(
-                    child: InfoFooter(
-                      child: TitleYearInputScreen(),
+    return Provider.value(
+      value: currentStoryController,
+      child: Provider.value(
+        value: stories,
+        child: ChangeNotifierProvider<FooterController>(
+          builder: (context) => FooterController(),
+          child: Scaffold(
+            backgroundColor: kDarkBlueBackground,
+            body: SafeArea(
+              child: Consumer<FooterController>(
+                  builder: (context, footerController, child) {
+                return Column(
+                  children: <Widget>[
+                    NavigationBar(),
+                    Expanded(
+                      child: MapArea(
+                        infoWindowFactory: InstructionsCarouselFactory(),
+                      ),
                     ),
-                  ),
-              ],
-            );
-          }),
+                    if (footerController.extended)
+                      Expanded(
+                        child: InfoFooter(
+                          child: TitleYearInputScreen(),
+                        ),
+                      ),
+                  ],
+                );
+              }),
+            ),
+          ),
         ),
       ),
     );
   }
 }
 
-class InstructionsCarouselFactory {
-  generateInstructionsCarousel({String title}) {
-    return InstructionsCarousel(title: title);
+/// template for the info windows in the student assignment page
+class InstructionsCarouselFactory implements InfoWindowTemplate {
+  @override
+  generateInfoWindowTemplate({@required Story story}) {
+    return InstructionsCarousel(title: story.title);
   }
 }
 
