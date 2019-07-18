@@ -15,7 +15,7 @@ enum InfoWindowVisibility { VISIBLE, HIDDEN }
 class InfoWindowMarker {
   static List<InfoWindowMarker> infoWindowMarkers = [];
 
-  // all InfoWindowMarkers will be associated with a Place
+  /// all InfoWindowMarkers will be associated with a Place
   Place place;
 
   final LatLng infoWindowLatLng;
@@ -23,16 +23,14 @@ class InfoWindowMarker {
   /// widget that builds the infowindow
   final Widget infoWindow;
 
-  // trying to center infowindow
+  /// trying to center infowindow
   // TODO: find a better way to do this exactly and make sure it works on different screen sizes
   static const offsetFromMarker = Offset(0.01, 0.002);
-
-  /// every InfoWindowMarker has custom tap behavior
-  bool performMarkerAction = false;
 
   var infoWindowVisibilityController =
       StreamController<InfoWindowVisibility>.broadcast();
 
+  /// callback on marker tap
   VoidCallback customTapCallback;
 
   InfoWindowMarker({this.infoWindow, this.place, this.customTapCallback})

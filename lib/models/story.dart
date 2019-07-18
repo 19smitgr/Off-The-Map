@@ -15,7 +15,7 @@ class Story {
   /// years that a person's research may discuss
   List<int> researchYears;
   String text;
-  DateTime dateWritten = DateTime.now();
+  DateTime dateWritten;
 
   /// We have this in both Place and Story because it connects the two conceptually
   String topic;
@@ -23,8 +23,7 @@ class Story {
   /// this will enable us to load the place from a story if we don't already have it loaded
   DocumentReference placeDocRef;
 
-
-  Story({this.researchYears = const [], this.text = '', this.dateWritten, this.topic}) {
+  Story({this.researchYears = const [], this.text = '', this.dateWritten, this.topic = ''}) {
     dateWritten = DateTime.now();
   }
 
