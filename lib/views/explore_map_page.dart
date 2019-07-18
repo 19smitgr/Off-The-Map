@@ -4,6 +4,7 @@ import 'package:off_the_map/constants.dart';
 import 'package:off_the_map/controllers/current_place_controller.dart';
 import 'package:off_the_map/controllers/current_story_controller.dart';
 import 'package:off_the_map/controllers/footer_controller.dart';
+import 'package:off_the_map/controllers/map_controller.dart';
 import 'package:off_the_map/models/place.dart';
 import 'package:off_the_map/models/story.dart';
 import 'package:off_the_map/objects/info_window_marker.dart';
@@ -14,21 +15,8 @@ import 'package:off_the_map/views/partials/place_story.dart';
 import 'package:off_the_map/views/place_story_page.dart';
 import 'package:provider/provider.dart';
 
-class ExploreMapPage extends StatefulWidget {
-  @override
-  _ExploreMapPageState createState() => _ExploreMapPageState();
-}
-
-class _ExploreMapPageState extends State<ExploreMapPage> {
-  // List<Place> places = [
-  //   Place(name: 'College Hill Park', latLng: LatLng(35.748318, -83.970284)),
-  //   Place(name: 'Maryville College', latLng: LatLng(35.751353, -83.964528)),
-  //   Place(name: 'Municipal Building', latLng: LatLng(35.758584, -83.973)),
-  //   Place(name: 'Vulcan Quarry', latLng: LatLng(35.732283, -83.957176))
-  // ];
-
-  List<Place> places = [];
-
+class ExploreMapPage extends StatelessWidget {
+  final MapAreaController mapAreaController = MapAreaController();
   final CurrentPlaceController currentPlaceController =
       CurrentPlaceController();
   final CurrentStoryController currentStoryController =
@@ -46,7 +34,7 @@ class _ExploreMapPageState extends State<ExploreMapPage> {
     return MultiProvider(
       providers: [
         Provider<CurrentPlaceController>.value(value: currentPlaceController),
-        Provider<List<Place>>.value(value: places),
+        Provider<List<Place>>.value(value: mapAreaController.places),
       ],
       child: ChangeNotifierProvider<CurrentStoryController>(
         builder: (context) => currentStoryController,
@@ -76,10 +64,10 @@ class _ExploreMapPageState extends State<ExploreMapPage> {
                               case ConnectionState.waiting:
                                 break;
                               default:
-                                places.clear();
+                                mapAreaController.places.clear();
                                 snapshot.data.documents
                                     .forEach((DocumentSnapshot doc) {
-                                  places.add(
+                                  mapAreaController.places.add(
                                     Place.fromFirestore(doc.data, doc.reference),
                                   );
                                 });

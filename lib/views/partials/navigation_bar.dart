@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:off_the_map/constants.dart';
 
-class NavigationBar extends StatefulWidget {
+class NavigationBar extends StatelessWidget {
   NavigationBar({this.showBottomPart = true});
 
-  bool showBottomPart;
+  final bool showBottomPart;
 
-  @override
-  _NavigationBarState createState() => _NavigationBarState();
-}
-
-class _NavigationBarState extends State<NavigationBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,7 +24,7 @@ class _NavigationBarState extends State<NavigationBar> {
               ),
             ),
           ),
-          if (widget.showBottomPart)
+          if (showBottomPart)
             Container(
               // bottom part
               color: kLightBlueBackground,

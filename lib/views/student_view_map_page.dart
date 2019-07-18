@@ -84,6 +84,7 @@ class InstructionsCarousel extends StatefulWidget {
 
 class _InstructionsCarouselState extends State<InstructionsCarousel> {
   int _pageNum = 1;
+  CarouselSlider slider;
 
   @override
   void initState() {
@@ -97,8 +98,6 @@ class _InstructionsCarouselState extends State<InstructionsCarousel> {
       ],
     );
   }
-
-  CarouselSlider slider;
 
   /// This keeps track of page number by changing _pageNum
   void incrementPage() {

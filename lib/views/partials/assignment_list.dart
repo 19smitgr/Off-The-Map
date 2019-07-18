@@ -2,20 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:off_the_map/constants.dart';
 import 'package:off_the_map/views/student_view_map_page.dart';
 
-class AssignmentList extends StatefulWidget {
-  @override
-  _AssignmentListState createState() => _AssignmentListState();
-}
-
-class _AssignmentListState extends State<AssignmentList> {
-  List<AssignmentWithOptions> assignments = [
+class AssignmentList extends StatelessWidget {
+  final List<AssignmentWithOptions> assignments = [
     AssignmentWithOptions(),
     AssignmentWithOptions(),
     AssignmentWithOptions(),
     AssignmentWithOptions(),
   ];
 
-  List<AssignmentWithOptions> pastAssignments = [
+  final List<AssignmentWithOptions> pastAssignments = [
     AssignmentWithOptions(),
     AssignmentWithOptions(),
     AssignmentWithOptions(),
@@ -58,14 +53,9 @@ class _AssignmentListState extends State<AssignmentList> {
   }
 }
 
-class AssignmentWithOptions extends StatefulWidget {
-  @override
-  _AssignmentWithOptionsState createState() => _AssignmentWithOptionsState();
-}
-
-class _AssignmentWithOptionsState extends State<AssignmentWithOptions> {
-  String title = 'Local Parks';
-  List<String> options = [
+class AssignmentWithOptions extends StatelessWidget {
+  final String title = 'Local Parks';
+  final List<String> options = [
     'Work on Assignment',
     'Publish Work',
     'Submit Assignment',

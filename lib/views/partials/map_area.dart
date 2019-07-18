@@ -6,7 +6,7 @@ import 'package:off_the_map/objects/info_window_marker.dart';
 import 'package:off_the_map/objects/info_window_template_widget.dart';
 import 'package:provider/provider.dart';
 
-class MapArea extends StatefulWidget {
+class MapArea extends StatelessWidget {
   /// when a marker on the map is tapped, this is what will popup above the marker
   final InfoWindowTemplate infoWindowFactory;
 
@@ -16,11 +16,6 @@ class MapArea extends StatefulWidget {
   MapArea({@required this.infoWindowFactory, this.markerCustomTapCallback});
 
   @override
-  _MapAreaState createState() => _MapAreaState();
-}
-
-class _MapAreaState extends State<MapArea> {
-  @override
   Widget build(BuildContext context) {
     var places = Provider.of<List<Place>>(context);
 
@@ -28,17 +23,17 @@ class _MapAreaState extends State<MapArea> {
     InfoWindowMarker infoWindowMarker;
 
     for (Place place in places) {
-      if (widget.markerCustomTapCallback == null) {
+      if (markerCustomTapCallback == null) {
         infoWindowMarker = InfoWindowMarker(
-            infoWindow: widget.infoWindowFactory
+            infoWindow: infoWindowFactory
                 .generateInfoWindowTemplate(place: place),
             place: place);
       } else {
         infoWindowMarker = InfoWindowMarker(
-            infoWindow: widget.infoWindowFactory
+            infoWindow: infoWindowFactory
                 .generateInfoWindowTemplate(place: place),
             place: place,
-            customTapCallback: widget.markerCustomTapCallback);
+            customTapCallback: markerCustomTapCallback);
       }
 
       infoWindowMarkers.add(infoWindowMarker);

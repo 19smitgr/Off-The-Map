@@ -1,38 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:off_the_map/constants.dart';
+import 'package:off_the_map/controllers/media_upload_button_controller.dart';
 
 typedef Widget BuildMediaView(BuildContext context);
 
-class MediaUploadButton extends StatefulWidget {
+class MediaUploadButton extends StatelessWidget {
   final IconData iconData;
   final String caption;
   final BuildMediaView buildMediaView;
+  final MediaUploadButtonController mediaUploadButtonController = MediaUploadButtonController();
 
   MediaUploadButton(this.iconData, this.caption, this.buildMediaView);
-
-  @override
-  _MediaUploadButtonState createState() => _MediaUploadButtonState();
-}
-
-class _MediaUploadButtonState extends State<MediaUploadButton> {
-  bool mediaHasBeenSubmitted = false;
 
   @override
   Widget build(BuildContext context) {
     return FlatButton(
       onPressed: () {
-        Navigator.push(context, MaterialPageRoute(builder: widget.buildMediaView));
+        Navigator.push(context, MaterialPageRoute(builder: buildMediaView));
       },
       child: Column(
         children: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Icon(widget.iconData),
-              Text(widget.caption),
+              Icon(iconData),
+              Text(caption),
             ],
           ),
-          if (mediaHasBeenSubmitted)
+          if (mediaUploadButtonController.mediaHasBeenSubmitted)
             Text('View Submitted', style: kAssignmentOptionStyle),
         ],
       ),
