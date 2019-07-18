@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:off_the_map/constants.dart';
-import 'package:off_the_map/student_view_map_page.dart';
+import 'package:off_the_map/views/student_view_map_page.dart';
 
 class AssignmentList extends StatefulWidget {
   @override

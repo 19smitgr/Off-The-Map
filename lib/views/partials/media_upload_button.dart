@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:off_the_map/partials/text_editor.dart';
-
-import '../constants.dart';
+import 'package:off_the_map/constants.dart';
 
 typedef Widget BuildMediaView(BuildContext context);
 

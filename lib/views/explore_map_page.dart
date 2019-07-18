@@ -1,18 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:off_the_map/current_place_controller.dart';
-import 'package:off_the_map/current_story_controller.dart';
-import 'package:off_the_map/footer_controller.dart';
-import 'package:off_the_map/info_window_template_widget.dart';
-import 'package:off_the_map/partials/info_footer.dart';
-import 'package:off_the_map/partials/info_window_marker.dart';
-import 'package:off_the_map/partials/map_area.dart';
-import 'package:off_the_map/partials/story.dart';
-import 'package:off_the_map/place_story.dart';
-import 'package:off_the_map/place_story_page.dart';
+import 'package:off_the_map/constants.dart';
+import 'package:off_the_map/controllers/current_place_controller.dart';
+import 'package:off_the_map/controllers/current_story_controller.dart';
+import 'package:off_the_map/controllers/footer_controller.dart';
+import 'package:off_the_map/models/place.dart';
+import 'package:off_the_map/models/story.dart';
+import 'package:off_the_map/objects/info_window_marker.dart';
+import 'package:off_the_map/objects/info_window_template_widget.dart';
+import 'package:off_the_map/views/partials/info_footer.dart';
+import 'package:off_the_map/views/partials/map_area.dart';
+import 'package:off_the_map/views/partials/place_story.dart';
+import 'package:off_the_map/views/place_story_page.dart';
 import 'package:provider/provider.dart';
-
-import 'constants.dart';
 
 class ExploreMapPage extends StatefulWidget {
   @override
@@ -156,8 +156,6 @@ class TopicList extends StatelessWidget {
   Widget build(BuildContext context) {
     CurrentPlaceController currentPlaceController =
         Provider.of<CurrentPlaceController>(context);
-    CurrentStoryController currentStoryController =
-        Provider.of<CurrentStoryController>(context);
 
     return Column(
       children: <Widget>[

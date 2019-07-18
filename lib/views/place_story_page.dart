@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:off_the_map/current_place_controller.dart';
-import 'package:off_the_map/partials/story.dart';
-import 'package:off_the_map/partials/text_editor.dart';
-import 'package:off_the_map/place_story.dart';
-import 'package:provider/provider.dart';
-
-import 'constants.dart';
+import 'package:off_the_map/constants.dart';
+import 'package:off_the_map/controllers/current_place_controller.dart';
+import 'package:off_the_map/models/story.dart';
+import 'package:off_the_map/views/partials/place_story.dart';
+import 'package:off_the_map/views/partials/text_editor.dart';
 
 class PlaceStoryPage extends StatelessWidget {
   final String topic;

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:off_the_map/current_place_controller.dart';
-import 'package:off_the_map/current_story_controller.dart';
-import 'package:off_the_map/partials/info_window_marker.dart';
-import 'package:off_the_map/partials/story.dart';
-import 'package:off_the_map/partials/text_editor.dart';
+import 'package:off_the_map/constants.dart';
+import 'package:off_the_map/controllers/current_place_controller.dart';
+import 'package:off_the_map/controllers/current_story_controller.dart';
+import 'package:off_the_map/controllers/footer_controller.dart';
+import 'package:off_the_map/models/place.dart';
+import 'package:off_the_map/models/story.dart';
+import 'package:off_the_map/objects/info_window_marker.dart';
+import 'package:off_the_map/views/partials/text_editor.dart';
 import 'package:provider/provider.dart';
 
-import '../constants.dart';
-import '../footer_controller.dart';
 import 'media_upload_button.dart';
 
 class TitleYearInputScreen extends StatefulWidget {

@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
-import 'package:off_the_map/current_place_controller.dart';
-import 'package:off_the_map/partials/story.dart';
+import 'package:off_the_map/controllers/current_place_controller.dart';
+import 'package:off_the_map/models/place.dart';
 import 'package:provider/provider.dart';
 
 import '../constants.dart';

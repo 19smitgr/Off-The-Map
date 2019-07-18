@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:off_the_map/assignment_list.dart';
-import 'package:off_the_map/partials/navigation_bar.dart';
+import 'package:off_the_map/constants.dart';
+import 'package:off_the_map/views/partials/assignment_list.dart';
+import 'package:off_the_map/views/partials/navigation_bar.dart';
 
-import 'constants.dart';
-
-class AssignmentPage extends StatelessWidget {
+class StudentAssignmentPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

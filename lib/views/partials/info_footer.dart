@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:off_the_map/constants.dart';
-import 'package:off_the_map/footer_controller.dart';
+import 'package:off_the_map/controllers/footer_controller.dart';
 import 'package:provider/provider.dart';
 
 class InfoFooter extends StatelessWidget {

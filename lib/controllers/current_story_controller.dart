@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:off_the_map/partials/story.dart';
+import 'package:off_the_map/models/story.dart';
 
 class CurrentStoryController extends ChangeNotifier {
   Story _currentStory;

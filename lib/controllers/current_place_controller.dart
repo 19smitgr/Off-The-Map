@@ -1,5 +1,6 @@
 import 'package:latlong/latlong.dart';
-import 'package:off_the_map/partials/story.dart';
+import 'package:off_the_map/models/place.dart';
+import 'package:off_the_map/models/story.dart';
 
 class CurrentPlaceController {
   Place currentPlace;

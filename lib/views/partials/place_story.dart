@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:off_the_map/constants.dart';
-import 'package:off_the_map/partials/story.dart';
+import 'package:off_the_map/models/story.dart';
 
 class PlaceStory extends StatelessWidget {
   final Story story;
