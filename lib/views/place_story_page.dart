@@ -13,7 +13,7 @@ class PlaceStoryPage extends StatelessWidget {
   PlaceStoryPage({this.topic, this.stories, this.currentPlaceController});
 
   @override
-  Widget build(BuildContext context) {    
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kGrayBackgroundColor,
       appBar: AppBar(
@@ -34,28 +34,36 @@ class PlaceStoryPage extends StatelessWidget {
                 child: Container(
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: Column(children: <Widget>[
-                      for (Story story in stories)
-                        PlaceStory(
-                      story: story,
+                    child: Column(
                       children: <Widget>[
-                        IconButton(
-                            onPressed: () {
-                              print("something");
-                            },
-                            icon: Icon(Icons.location_on)),
-                        SizedBox(
-                          width: 5.0,
-                        ),
-                        IconButton(
-                            onPressed: () {}, icon: Icon(Icons.thumb_up)),
-                        SizedBox(
-                          width: 5.0,
-                        ),
-                        IconButton(onPressed: () {}, icon: Icon(Icons.chat)),
+                        for (Story story in stories)
+                          PlaceStory(
+                            story: story,
+                            children: <Widget>[
+                              IconButton(
+                                onPressed: () {
+                                  print("something");
+                                },
+                                icon: Icon(Icons.location_on),
+                              ),
+                              SizedBox(
+                                width: 5.0,
+                              ),
+                              IconButton(
+                                onPressed: () {},
+                                icon: Icon(Icons.thumb_up),
+                              ),
+                              SizedBox(
+                                width: 5.0,
+                              ),
+                              IconButton(
+                                onPressed: () {},
+                                icon: Icon(Icons.chat),
+                              ),
+                            ],
+                          ),
                       ],
                     ),
-                    ],),
                   ),
                 ),
                 flex: 4),
