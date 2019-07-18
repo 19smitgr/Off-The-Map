@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:off_the_map/current_place_controller.dart';
+import 'package:off_the_map/partials/story.dart';
 import 'package:off_the_map/partials/text_editor.dart';
 import 'package:off_the_map/place_story.dart';
+import 'package:provider/provider.dart';
 
 import 'constants.dart';
 
-class PlaceStoryPage extends StatefulWidget {
-  @override
-  _PlaceStoryPageState createState() => _PlaceStoryPageState();
-}
+class PlaceStoryPage extends StatelessWidget {
+  final String topic;
+  final List<Story> stories;
+  final CurrentPlaceController currentPlaceController;
 
-class _PlaceStoryPageState extends State<PlaceStoryPage> {
+  PlaceStoryPage({this.topic, this.stories, this.currentPlaceController});
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {    
     return Scaffold(
+      backgroundColor: kGrayBackgroundColor,
       appBar: AppBar(
-        title: Text('College Hill Park', style: kHeader),
+        title: Text(currentPlaceController.currentPlace.name, style: kHeader),
         backgroundColor: Color(0xFF93639A),
       ),
       body: Container(
@@ -25,13 +30,34 @@ class _PlaceStoryPageState extends State<PlaceStoryPage> {
               height: 10.0,
             ),
             Center(
-              child: Text('1960: Origins', style: kHeader),
+              child: Text(topic, style: kHeader),
             ),
             Expanded(
                 child: Container(
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: PlaceStory(),
+                    child: Column(children: <Widget>[
+                      for (Story story in stories)
+                        PlaceStory(
+                      story: story,
+                      children: <Widget>[
+                        IconButton(
+                            onPressed: () {
+                              print("something");
+                            },
+                            icon: Icon(Icons.location_on)),
+                        SizedBox(
+                          width: 5.0,
+                        ),
+                        IconButton(
+                            onPressed: () {}, icon: Icon(Icons.thumb_up)),
+                        SizedBox(
+                          width: 5.0,
+                        ),
+                        IconButton(onPressed: () {}, icon: Icon(Icons.chat)),
+                      ],
+                    ),
+                    ],),
                   ),
                 ),
                 flex: 4),
@@ -49,7 +75,7 @@ class _PlaceStoryPageState extends State<PlaceStoryPage> {
                       onPressed: () {},
                       color: Color(0xFF93639A), // purple
                       child: Text(
-                        'All College Hill Park Stories',
+                        'All College Hill Park Topics',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),

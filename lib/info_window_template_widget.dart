@@ -5,5 +5,5 @@ import 'package:off_the_map/partials/story.dart';
 /// MapArea will plug in a Story to a `InfoWindowTemplate`
 /// And then the InfoWindowTemplate will generate a widget
 abstract class InfoWindowTemplate {
-  Widget generateInfoWindowTemplate({@required Story story});
+  Widget generateInfoWindowTemplate({@required Place place});
 }

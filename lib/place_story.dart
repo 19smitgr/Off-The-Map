@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:off_the_map/constants.dart';
+import 'package:off_the_map/partials/story.dart';
 
-class PlaceStory extends StatefulWidget {
-  @override
-  _PlaceStoryState createState() => _PlaceStoryState();
-}
+class PlaceStory extends StatelessWidget {
+  final Story story;
+  final List<Widget> children;
 
-class _PlaceStoryState extends State<PlaceStory> {
+  const PlaceStory({this.story, this.children});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -14,20 +15,17 @@ class _PlaceStoryState extends State<PlaceStory> {
         Row(
           children: <Widget>[
             Text('Garrett Smith —', style: kBoldText),
-            Text('June 26th'),
+            Text(story.dateWritten.toString()),
           ],
         ),
-        Text(
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod pretium dignissim. Vestibulum eu luctus augue. Sed convallis nibh ut turpis mollis, sed euismod dui porttitor. Vivamus faucibus orci turpis, egestas pellentesque sapien tempor nec. Ut neque nisi, commodo et lectus at, laoreet porta justo. Sed pharetra velit eu nibh tempor dapibus.'),
+        Text(story.text),
         Divider(),
-        Row(
-          children: <Widget>[
-            IconButton(onPressed: () {}, icon: Icon(Icons.location_on)),
-            SizedBox(width: 5.0,),
-            IconButton(onPressed: () {}, icon: Icon(Icons.thumb_up)),
-            SizedBox(width: 5.0,),
-            IconButton(onPressed: () {}, icon: Icon(Icons.chat)),
-          ],
+        Material(
+          color: kGrayBackgroundColor,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: children
+          ),
         ),
       ],
     );

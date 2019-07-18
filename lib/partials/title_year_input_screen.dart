@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:off_the_map/current_place_controller.dart';
 import 'package:off_the_map/current_story_controller.dart';
 import 'package:off_the_map/partials/info_window_marker.dart';
+import 'package:off_the_map/partials/story.dart';
 import 'package:off_the_map/partials/text_editor.dart';
 import 'package:provider/provider.dart';
 
@@ -21,12 +23,15 @@ class _TitleYearInputScreenState extends State<TitleYearInputScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var currentPlaceController = Provider.of<CurrentPlaceController>(context);
+    Place place = currentPlaceController.currentPlace;
+
     var currentStoryController = Provider.of<CurrentStoryController>(context);
-    var story = currentStoryController.currentStory;
+    Story story = currentStoryController.currentStory;
 
     return Column(
       children: <Widget>[
-        Text(story.title, style: kHeader),
+        Text(story.topic, style: kHeader),
         SizedBox(height: 15.0),
         Flexible(
           child: ListView(
@@ -43,9 +48,9 @@ class _TitleYearInputScreenState extends State<TitleYearInputScreen> {
                     FlatButton(
                       child: Text('Save', style: kAssignmentOptionStyle),
                       onPressed: () {
-                        story.title = titleController.text;
+                        story.topic = titleController.text;
 
-                        if (story.title.length > 0) {
+                        if (story.topic.length > 0) {
                           editingTitle = false;
                           setState(() {});
                         }
@@ -60,7 +65,7 @@ class _TitleYearInputScreenState extends State<TitleYearInputScreen> {
                         style: TextStyle(fontWeight: FontWeight.bold)),
                     Expanded(
                       child: Text(
-                        story.title,
+                        story.topic,
                         style: TextStyle(fontStyle: FontStyle.italic),
                       ),
                     ),
@@ -68,7 +73,7 @@ class _TitleYearInputScreenState extends State<TitleYearInputScreen> {
                       child: Text('Edit', style: kAssignmentOptionStyle),
                       onPressed: () {
                         editingTitle = true;
-                        titleController.text = story.title;
+                        titleController.text = story.topic;
                         setState(() {});
                       },
                     ),

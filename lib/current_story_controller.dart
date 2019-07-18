@@ -1,9 +1,17 @@
+import 'package:flutter/widgets.dart';
 import 'package:off_the_map/partials/story.dart';
 
-class CurrentStoryController {
-  Story currentStory;
+class CurrentStoryController extends ChangeNotifier {
+  Story _currentStory;
 
   CurrentStoryController() {
     currentStory = Story();
   }
+
+  set currentStory(Story story) {
+    _currentStory = story;
+    notifyListeners();
+  }
+
+  get currentStory => _currentStory;
 }

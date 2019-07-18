@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
-import 'package:off_the_map/current_story_controller.dart';
+import 'package:off_the_map/current_place_controller.dart';
 import 'package:off_the_map/partials/story.dart';
 import 'package:provider/provider.dart';
 
@@ -15,8 +15,8 @@ enum InfoWindowVisibility { VISIBLE, HIDDEN }
 class InfoWindowMarker {
   static List<InfoWindowMarker> infoWindowMarkers = [];
 
-  // all InfoWindowMarkers will be associated with a Story
-  Story story;
+  // all InfoWindowMarkers will be associated with a Place
+  Place place;
 
   final LatLng infoWindowLatLng;
 
@@ -33,8 +33,10 @@ class InfoWindowMarker {
   var infoWindowVisibilityController =
       StreamController<InfoWindowVisibility>.broadcast();
 
-  InfoWindowMarker({this.infoWindow, this.story})
-      : infoWindowLatLng = getOffsetLatLng(story.latLng);
+  VoidCallback customTapCallback;
+
+  InfoWindowMarker({this.infoWindow, this.place, this.customTapCallback})
+      : infoWindowLatLng = getOffsetLatLng(place.latLng);
 
   /// this will prevent memory leaks from the streamController `infoWindowVisibility`
   void dispose() {
@@ -82,18 +84,22 @@ class InfoWindowMarker {
         height: 165,
       ),
       Marker(
-        point: story.latLng,
+        point: place.latLng,
         builder: (ctx) => GestureDetector(
               onTap: () {
                 InfoWindowMarker.closeAllInfoWindows();
                 infoWindowVisibilityController
                     .add(InfoWindowVisibility.VISIBLE);
-                var stories = Provider.of<List<Story>>(ctx);
-                for (Story story in stories) {
-                  if (story.title == this.story.title) {
-                    Provider.of<CurrentStoryController>(ctx).currentStory = story;
+                var places = Provider.of<List<Place>>(ctx);
+                
+                // TODO: Refactor because I'm sure there's a better way of doing this
+                for (Place place in places) {
+                  if (place.name == this.place.name) {
+                    Provider.of<CurrentPlaceController>(ctx).currentPlace = place;
                   }
                 }
+
+                if (customTapCallback != null) customTapCallback();
               },
               child: Container(
                 child: Icon(

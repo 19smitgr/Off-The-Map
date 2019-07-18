@@ -14,21 +14,21 @@ import 'constants.dart';
 import 'current_story_controller.dart';
 
 class StudentViewMapPage extends StatelessWidget {
-  List<Story> stories = [
-    Story(title: 'College Hill Park', latLng: LatLng(35.758584, -83.972536)),
-    Story(title: 'Maryville College', latLng: LatLng(35.759, -83.972536)),
-    Story(title: 'Municipal Building', latLng: LatLng(35.758584, -83.973)),
-    Story(title: 'House Cafe', latLng: LatLng(35.759, -83.973))
+  final List<Place> names = [
+    Place(name: 'College Hill Park', latLng: LatLng(35.758584, -83.972536)),
+    Place(name: 'Maryville College', latLng: LatLng(35.759, -83.972536)),
+    Place(name: 'Municipal Building', latLng: LatLng(35.758584, -83.973)),
+    Place(name: 'House Cafe', latLng: LatLng(35.759, -83.973))
   ];
 
-  CurrentStoryController currentStoryController = CurrentStoryController();
+  final CurrentStoryController currentStoryController = CurrentStoryController();
 
   @override
   Widget build(BuildContext context) {
     return Provider.value(
       value: currentStoryController,
       child: Provider.value(
-        value: stories,
+        value: names,
         child: ChangeNotifierProvider<FooterController>(
           builder: (context) => FooterController(),
           child: Scaffold(
@@ -64,8 +64,8 @@ class StudentViewMapPage extends StatelessWidget {
 /// template for the info windows in the student assignment page
 class InstructionsCarouselFactory implements InfoWindowTemplate {
   @override
-  generateInfoWindowTemplate({@required Story story}) {
-    return InstructionsCarousel(title: story.title);
+  generateInfoWindowTemplate({@required Place place}) {
+    return InstructionsCarousel(title: place.name);
   }
 }
 

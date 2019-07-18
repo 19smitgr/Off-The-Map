@@ -1,6 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:off_the_map/current_place_controller.dart';
+import 'package:off_the_map/current_story_controller.dart';
+import 'package:off_the_map/footer_controller.dart';
+import 'package:off_the_map/info_window_template_widget.dart';
 import 'package:off_the_map/partials/info_footer.dart';
+import 'package:off_the_map/partials/info_window_marker.dart';
 import 'package:off_the_map/partials/map_area.dart';
+import 'package:off_the_map/partials/story.dart';
+import 'package:off_the_map/place_story.dart';
+import 'package:off_the_map/place_story_page.dart';
+import 'package:provider/provider.dart';
+
+import 'constants.dart';
 
 class ExploreMapPage extends StatefulWidget {
   @override
@@ -8,31 +20,265 @@ class ExploreMapPage extends StatefulWidget {
 }
 
 class _ExploreMapPageState extends State<ExploreMapPage> {
+  // List<Place> places = [
+  //   Place(name: 'College Hill Park', latLng: LatLng(35.748318, -83.970284)),
+  //   Place(name: 'Maryville College', latLng: LatLng(35.751353, -83.964528)),
+  //   Place(name: 'Municipal Building', latLng: LatLng(35.758584, -83.973)),
+  //   Place(name: 'Vulcan Quarry', latLng: LatLng(35.732283, -83.957176))
+  // ];
+
+  List<Place> places = [];
+
+  final CurrentPlaceController currentPlaceController =
+      CurrentPlaceController();
+  final CurrentStoryController currentStoryController =
+      CurrentStoryController();
+  final FooterController footerController = FooterController();
+
+  void onMarkerTap() {
+    footerController.extended = true;
+
+    footerController.replaceFooterContent(TopicList());
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: TextField(
-          style: TextStyle(color: Colors.white),
-          decoration: InputDecoration.collapsed(hintText: 'Search Places'),
+    return MultiProvider(
+      providers: [
+        Provider<CurrentPlaceController>.value(value: currentPlaceController),
+        Provider<List<Place>>.value(value: places),
+      ],
+      child: ChangeNotifierProvider<CurrentStoryController>(
+        builder: (context) => currentStoryController,
+              child: ChangeNotifierProvider<FooterController>(
+          builder: (context) => footerController,
+          child: Scaffold(
+            backgroundColor: kGrayBackgroundColor,
+            appBar: AppBar(
+              title: TextField(
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration.collapsed(hintText: 'Search Places'),
+              ),
+            ),
+            body: SafeArea(
+              child: Consumer<FooterController>(
+                builder: (context, footerController, child) {
+                  return Column(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 1,
+                        child: StreamBuilder<QuerySnapshot>(
+                          stream:
+                              Firestore.instance.collection('places').snapshots(),
+                          builder:
+                              (BuildContext context, AsyncSnapshot snapshot) {
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.waiting:
+                                break;
+                              default:
+                                places.clear();
+                                snapshot.data.documents
+                                    .forEach((DocumentSnapshot doc) {
+                                  places.add(
+                                    Place.fromFirestore(doc.data, doc.reference),
+                                  );
+                                });
+                            }
+
+                            return MapArea(
+                              infoWindowFactory: InfoWindowExplorePageTemplate(),
+                              markerCustomTapCallback: onMarkerTap,
+                            );
+                          },
+                        ),
+                      ),
+                      // footer
+                      if (footerController.extended)
+                        Expanded(
+                          flex: 1,
+                          child: InfoFooter(
+                            child: TopicList(),
+                          ),
+                        ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ),
         ),
       ),
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: MapArea(),
-            ),
-            Expanded(
-              child: InfoFooter(
-                child: Column(
-                  children: <Widget>[],
-                ),
+    );
+  }
+}
+
+class InfoWindowExplorePageTemplate implements InfoWindowTemplate {
+  @override
+  Widget generateInfoWindowTemplate({Place place}) {
+    return InfoWindowExplorePage(place: place);
+  }
+}
+
+class InfoWindowExplorePage extends StatelessWidget {
+  final Place place;
+
+  InfoWindowExplorePage({@required this.place});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(5.0),
+      color: kOrangeMarkerColor,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              IconButton(
+                onPressed: () {
+                  InfoWindowMarker.closeAllInfoWindows();
+                  var footerController = Provider.of<FooterController>(context);
+                  footerController.extended = false;
+                },
+                icon: Icon(Icons.close),
               ),
+            ],
+          ),
+          Text(place.name)
+        ],
+      ),
+    );
+  }
+}
+
+class TopicList extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    CurrentPlaceController currentPlaceController =
+        Provider.of<CurrentPlaceController>(context);
+    CurrentStoryController currentStoryController =
+        Provider.of<CurrentStoryController>(context);
+
+    return Column(
+      children: <Widget>[
+        Text(currentPlaceController.currentPlace.name, style: kHeader),
+        Text('Topics'),
+        Flexible(
+          child: StreamBuilder(
+            stream: currentPlaceController.currentPlace.getStories(),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                default:
+                  // populate currentPlaceController's `storiesByTopic`
+                  for (int i = 0; i < snapshot.data.documents.length; i++) {
+                    final DocumentSnapshot document =
+                        snapshot.data.documents[i];
+                    Story story = Story.fromFirestore(document.data);
+
+                    if (currentPlaceController.storiesByTopic
+                        .containsKey(story.topic)) {
+                      currentPlaceController.storiesByTopic[story.topic]
+                          .add(story);
+                    } else {
+                      currentPlaceController.storiesByTopic
+                          .putIfAbsent(story.topic, () => [story]);
+                    }
+                  }
+
+                  // make listView of all topics coupled with the top story for that topic
+                  return ListView.builder(
+                    itemCount: currentPlaceController.storiesByTopic.length,
+                    itemBuilder: (context, index) {
+                      List<String> keys =
+                          currentPlaceController.storiesByTopic.keys.toList();
+                      String topic = keys[index];
+
+                      Story topStory =
+                          currentPlaceController.getTopStoryForTopic(topic);
+
+                      return StoryListItem(story: topStory);
+                    },
+                  );
+              }
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class StoryListItem extends StatelessWidget {
+  final Story story;
+
+  StoryListItem({this.story});
+
+  @override
+  Widget build(BuildContext context) {
+    FooterController footerController = Provider.of<FooterController>(context);
+    CurrentStoryController currentStoryController =
+        Provider.of<CurrentStoryController>(context);
+
+    Color purple = Color(0xFF93639A);
+
+    return RaisedButton(
+      color: purple,
+      onPressed: () {
+        currentStoryController.currentStory = story;
+
+        // change footer content to the story
+        footerController.replaceFooterContent(StoryFooterView());
+      },
+      child: Text(
+        story.topic,
+        style: TextStyle(color: Colors.white),
+      ),
+    );
+  }
+}
+
+class StoryFooterView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    CurrentPlaceController currentPlaceController =
+        Provider.of<CurrentPlaceController>(context);
+    CurrentStoryController currentStoryController =
+        Provider.of<CurrentStoryController>(context);
+
+    return Column(
+      children: <Widget>[
+        Text(currentPlaceController.currentPlace.name, style: kHeader),
+        Text(currentStoryController.currentStory.topic),
+        PlaceStory(
+          story: currentStoryController.currentStory,
+          children: <Widget>[
+            FlatButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return PlaceStoryPage(
+                        topic: currentStoryController.currentStory.topic,
+                        stories: currentPlaceController.storiesByTopic[
+                            currentStoryController.currentStory.topic],
+                        currentPlaceController: currentPlaceController,
+                      );
+                    },
+                  ),
+                );
+              },
+              child: Text('See full story page', style: kAssignmentOptionStyle),
             ),
           ],
         ),
-      ),
+      ],
     );
   }
 }

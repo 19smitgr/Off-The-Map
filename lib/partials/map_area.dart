@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
+import 'package:off_the_map/info_window_template_widget.dart';
 import 'package:off_the_map/partials/info_window_marker.dart';
 import 'package:off_the_map/partials/story.dart';
-import 'package:off_the_map/student_view_map_page.dart';
 import 'package:provider/provider.dart';
 
 class MapArea extends StatefulWidget {
   /// when a marker on the map is tapped, this is what will popup above the marker
-  final InstructionsCarouselFactory infoWindowFactory;
+  final InfoWindowTemplate infoWindowFactory;
 
-  MapArea({@required this.infoWindowFactory});
+  /// callback for when the marker associated with the info window is tapped
+  final VoidCallback markerCustomTapCallback;
+
+  MapArea({@required this.infoWindowFactory, this.markerCustomTapCallback});
 
   @override
   _MapAreaState createState() => _MapAreaState();
@@ -19,15 +22,24 @@ class MapArea extends StatefulWidget {
 class _MapAreaState extends State<MapArea> {
   @override
   Widget build(BuildContext context) {
-    var stories = Provider.of<List<Story>>(context);
+    var places = Provider.of<List<Place>>(context);
 
     List<InfoWindowMarker> infoWindowMarkers = [];
+    InfoWindowMarker infoWindowMarker;
 
-    for (Story story in stories) {
-      var infoWindowMarker = InfoWindowMarker(
-        infoWindow: widget.infoWindowFactory.generateInfoWindowTemplate(story: story),
-        story: story
-      );
+    for (Place place in places) {
+      if (widget.markerCustomTapCallback == null) {
+        infoWindowMarker = InfoWindowMarker(
+            infoWindow: widget.infoWindowFactory
+                .generateInfoWindowTemplate(place: place),
+            place: place);
+      } else {
+        infoWindowMarker = InfoWindowMarker(
+            infoWindow: widget.infoWindowFactory
+                .generateInfoWindowTemplate(place: place),
+            place: place,
+            customTapCallback: widget.markerCustomTapCallback);
+      }
 
       infoWindowMarkers.add(infoWindowMarker);
       InfoWindowMarker.infoWindowMarkers.add(infoWindowMarker);
@@ -35,8 +47,8 @@ class _MapAreaState extends State<MapArea> {
 
     return FlutterMap(
       options: MapOptions(
-        center: LatLng(35.758584, -83.972536),
-        zoom: 13.0,
+        center: LatLng(35.754584, -83.974536),
+        zoom: 16.0,
       ),
       layers: [
         TileLayerOptions(
