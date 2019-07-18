@@ -68,6 +68,10 @@ class InstructionsCarouselFactory implements InfoWindowTemplate {
   }
 }
 
+/// stateful widget because it is only used by one widget
+/// It is a separate class for the sake of complexity management
+/// 
+/// If this class is ever made into its own file, then I will convert to stateless for consistency
 class InstructionsCarousel extends StatefulWidget {
   final List<String> buttonCaptionsByPage = [
     'See Instructions',

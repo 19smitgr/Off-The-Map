@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:off_the_map/controllers/text_editor_controller.dart';
 // import 'package:zefyr/zefyr.dart';
 
 class TextEditor extends StatefulWidget {
+  final TextEditorController textEditorController = TextEditorController();
+
   @override
   TextEditorState createState() => TextEditorState();
 }
 
 class TextEditorState extends State<TextEditor> {
-  // ZefyrController _controller;
-  // FocusNode _focusNode;
-
   // @override
   // void initState() {
   //   super.initState();
   //   // Create an empty document or load existing if you have one.
   //   // Here we create an empty document:
   //   final document = new NotusDocument();
-  //   _controller = new ZefyrController(document);
-  //   _focusNode = new FocusNode();
+  //   textEditorController.controller = new ZefyrController(document);
+  //   textEditorController.focusNode = new FocusNode();
   // }
 
   @override
@@ -44,9 +44,6 @@ class TextEditorState extends State<TextEditor> {
     //       FlatButton(
     //         onPressed: () {
     //           print(json.encode(_controller.document));
-
-              
-
     //           Navigator.pop(context);
     //         },
     //         child: Text('DONE', style: TextStyle(color: Colors.white)),
@@ -57,8 +54,8 @@ class TextEditorState extends State<TextEditor> {
     //     child: ZefyrTheme(
     //       data: theme,
     //       child: ZefyrEditor(
-    //         controller: _controller,
-    //         focusNode: _focusNode,
+    //         controller: textEditorController.controller,
+    //         focusNode: textEditorController.focusNode,
     //         imageDelegate: ZefyrDefaultImageDelegate(),
     //       ),
     //     ),
