@@ -23,14 +23,19 @@ class Story {
   /// this will enable us to load the place from a story if we don't already have it loaded
   DocumentReference placeDocRef;
 
+  /// reference for this story in the database
+  DocumentReference reference;
+
   Story({this.researchYears = const [], this.text = '', this.dateWritten, this.topic = ''}) {
     dateWritten = DateTime.now();
   }
 
-  Story.fromFirestore(data) {
-    this.dateWritten = data['dateWritten'].toDate();
-    this.researchYears = data['researchYears'].cast<int>();
-    this.text = data['text'];
-    this.topic = data['topic'];
+  Story.fromFirestore(DocumentSnapshot doc) {
+    this.dateWritten = doc['dateWritten'].toDate();
+    this.researchYears = doc['researchYears'].cast<int>();
+    this.text = doc['text'];
+    this.topic = doc['topic'];
+    this.reference = doc.reference;
+    this.placeDocRef = doc['parentPlaceRef'];
   }
 }

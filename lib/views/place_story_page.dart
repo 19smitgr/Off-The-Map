@@ -10,10 +10,11 @@ class PlaceStoryPage extends StatelessWidget {
   final List<Story> stories;
   final CurrentPlaceController currentPlaceController;
 
-  PlaceStoryPage({this.topic, this.stories, this.currentPlaceController});
+  PlaceStoryPage({@required this.topic, @required this.stories, @required this.currentPlaceController});
 
   @override
   Widget build(BuildContext context) {
+    print(currentPlaceController.currentPlace);
     return Scaffold(
       backgroundColor: kGrayBackgroundColor,
       appBar: AppBar(

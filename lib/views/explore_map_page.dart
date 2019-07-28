@@ -68,7 +68,7 @@ class ExploreMapPage extends StatelessWidget {
                                 snapshot.data.documents
                                     .forEach((DocumentSnapshot doc) {
                                   mapAreaController.places.add(
-                                    Place.fromFirestore(doc.data, doc.reference),
+                                    Place.fromFirestore(doc),
                                   );
                                 });
                             }
@@ -165,7 +165,7 @@ class TopicList extends StatelessWidget {
                   for (int i = 0; i < snapshot.data.documents.length; i++) {
                     final DocumentSnapshot document =
                         snapshot.data.documents[i];
-                    Story story = Story.fromFirestore(document.data);
+                    Story story = Story.fromFirestore(document);
 
                     if (currentPlaceController.storiesByTopic
                         .containsKey(story.topic)) {

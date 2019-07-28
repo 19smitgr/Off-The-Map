@@ -1,9 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:off_the_map/constants.dart';
-import 'package:off_the_map/views/partials/assignment_list.dart';
+import 'package:off_the_map/views/partials/assignment_with_options.dart';
 import 'package:off_the_map/views/partials/navigation_bar.dart';
 
 class StudentAssignmentPage extends StatelessWidget {
+  final List<AssignmentWithOptions> assignments = [
+    // AssignmentWithOptions(
+    //   title: 'Stuff and Things',
+    //   options: {
+    //     'Work on Assignment': StudentAssignmentPage(),
+    //     'Publish Work': Container(),
+    //     'Submit Assignment': Container(),
+    //   },
+    // ),
+  ];
+
+  final List<AssignmentWithOptions> pastAssignments = [
+    AssignmentWithOptions(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +31,34 @@ class StudentAssignmentPage extends StatelessWidget {
               showBottomPart: false,
             ),
             Expanded(
-              child: AssignmentList(),
+              child: Container(
+                color: kGrayBackgroundColor,
+                child: ListView(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text(
+                        'Current Assignments',
+                        style: kHeader,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    for (AssignmentWithOptions currentAssignment in assignments)
+                      currentAssignment,
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text(
+                        'Past Assignments',
+                        style: kHeader,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    for (AssignmentWithOptions pastAssignment
+                        in pastAssignments)
+                      pastAssignment,
+                  ],
+                ),
+              ),
             )
           ],
         ),

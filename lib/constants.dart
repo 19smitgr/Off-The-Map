@@ -18,3 +18,6 @@ var kBoldText = TextStyle(
   color: Colors.black,
   fontWeight: FontWeight.w900,
 );
+
+final Color kVeryDarkBlue = Color(0xFF30465C);
+final Color kPurple = Color(0xFF93639A);
