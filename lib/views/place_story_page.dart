@@ -14,7 +14,6 @@ class PlaceStoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(currentPlaceController.currentPlace);
     return Scaffold(
       backgroundColor: kGrayBackgroundColor,
       appBar: AppBar(

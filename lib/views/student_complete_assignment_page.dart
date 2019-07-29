@@ -1,9 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:latlong/latlong.dart';
 import 'package:off_the_map/constants.dart';
+import 'package:off_the_map/controllers/current_place_controller.dart';
 import 'package:off_the_map/controllers/current_story_controller.dart';
 import 'package:off_the_map/controllers/footer_controller.dart';
+import 'package:off_the_map/models/assignment.dart';
 import 'package:off_the_map/models/place.dart';
 import 'package:off_the_map/objects/info_window_template_widget.dart';
 import 'package:off_the_map/views/partials/info_footer.dart';
@@ -12,35 +13,46 @@ import 'package:off_the_map/views/partials/navigation_bar.dart';
 import 'package:off_the_map/views/partials/title_year_input_screen.dart';
 import 'package:provider/provider.dart';
 
-class StudentViewMapPage extends StatelessWidget {
-  final List<Place> names = [
-    Place(name: 'College Hill Park', latLng: LatLng(35.758584, -83.972536)),
-    Place(name: 'Maryville College', latLng: LatLng(35.759, -83.972536)),
-    Place(name: 'Municipal Building', latLng: LatLng(35.758584, -83.973)),
-    Place(name: 'House Cafe', latLng: LatLng(35.759, -83.973))
-  ];
+class StudentCompleteAssignmentPage extends StatelessWidget {
+  final CurrentStoryController currentStoryController =
+      CurrentStoryController();
+  final CurrentPlaceController currentPlaceController =
+      CurrentPlaceController();
+  final List<Place> places;
+  final Assignment assignment;
 
-  final CurrentStoryController currentStoryController = CurrentStoryController();
+  StudentCompleteAssignmentPage({@required this.places, @required this.assignment});
 
   @override
   Widget build(BuildContext context) {
     return Provider.value(
-      value: currentStoryController,
-      child: Provider.value(
-        value: names,
-        child: ChangeNotifierProvider<FooterController>(
-          builder: (context) => FooterController(),
-          child: Scaffold(
-            backgroundColor: kDarkBlueBackground,
-            body: SafeArea(
-              child: Consumer<FooterController>(
+      value: currentPlaceController,
+      child: ChangeNotifierProvider(
+        builder: (BuildContext context) {
+          return currentStoryController;
+        },
+        // necessary to provide a List<Place> because Map Area depends on it
+        child: Provider.value(
+          value: places,
+          child: ChangeNotifierProvider<FooterController>(
+            builder: (context) => FooterController(),
+            child: Scaffold(
+              backgroundColor: kDarkBlueBackground,
+              appBar: AppBar(
+                backgroundColor: kDarkBlueBackground,
+                title: Text(assignment.name),
+                // bottom: PreferredSizeWidget()
+              ),
+              body: Consumer<FooterController>(
                   builder: (context, footerController, child) {
                 return Column(
                   children: <Widget>[
-                    NavigationBar(),
                     Expanded(
                       child: MapArea(
                         infoWindowFactory: InstructionsCarouselFactory(),
+                        markerCustomTapCallback: () {
+                          footerController.extended = true;
+                        },
                       ),
                     ),
                     if (footerController.extended)
@@ -70,7 +82,7 @@ class InstructionsCarouselFactory implements InfoWindowTemplate {
 
 /// stateful widget because it is only used by one widget
 /// It is a separate class for the sake of complexity management
-/// 
+///
 /// If this class is ever made into its own file, then I will convert to stateless for consistency
 class InstructionsCarousel extends StatefulWidget {
   final List<String> buttonCaptionsByPage = [

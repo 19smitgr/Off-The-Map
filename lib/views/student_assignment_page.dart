@@ -15,10 +15,6 @@ class StudentAssignmentPage extends StatelessWidget {
     // ),
   ];
 
-  final List<AssignmentWithOptions> pastAssignments = [
-    AssignmentWithOptions(),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,17 +41,6 @@ class StudentAssignmentPage extends StatelessWidget {
                     ),
                     for (AssignmentWithOptions currentAssignment in assignments)
                       currentAssignment,
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Text(
-                        'Past Assignments',
-                        style: kHeader,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    for (AssignmentWithOptions pastAssignment
-                        in pastAssignments)
-                      pastAssignment,
                   ],
                 ),
               ),

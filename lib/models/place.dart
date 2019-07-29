@@ -13,6 +13,8 @@ class Place {
   /// so we can search for child stories based on if they have this parent path
   DocumentReference reference;
 
+  List<NamedReference> assignmentRefs = [];
+
   Place({@required this.name, @required this.latLng});
 
   Place.fromFirestore(DocumentSnapshot doc) {
@@ -30,6 +32,18 @@ class Place {
               referenceList: map['stories'].cast<DocumentReference>(),
             ),
           );
+    }
+
+    // can be null because some places are not apart of an assignment
+    if (doc['assignmentRefs'] != null) {
+      for (var map in doc['assignmentRefs']) {
+        assignmentRefs.add(
+          NamedReference(
+            name: map['name'],
+            reference: map['reference'],
+          ),
+        );
+      }
     }
   }
 

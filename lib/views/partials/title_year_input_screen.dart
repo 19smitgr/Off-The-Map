@@ -27,7 +27,7 @@ class TitleYearInputScreen extends StatelessWidget {
 
     return Column(
       children: <Widget>[
-        Text(story.topic, style: kHeader),
+        Text(place.name, style: kHeader),
         SizedBox(height: 15.0),
         Flexible(
           child: ChangeNotifierProvider<TitleYearInputScreenController>.value(

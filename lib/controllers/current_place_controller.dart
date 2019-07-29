@@ -4,13 +4,17 @@ import 'package:off_the_map/models/story.dart';
 
 /// keeps track of current place in focus and the stories that the current place has
 class CurrentPlaceController {
-  Place currentPlace = Place(name: 'Default', latLng: LatLng(0,0));
+  Place currentPlace;
 
   /// Map of Topic, List<Story> for currentPlace
   /// useful for searching through a given topic
   Map<String, List<Story>> storiesByTopic = {};
 
-  CurrentPlaceController({this.currentPlace});
+  CurrentPlaceController({this.currentPlace}) {
+    if (currentPlace == null) {
+      currentPlace = Place(name: 'Default', latLng: LatLng(0,0));
+    }
+  }
 
   /// Right now, just returns first element in story list
   /// TODO: return story with highest number of "likes"
