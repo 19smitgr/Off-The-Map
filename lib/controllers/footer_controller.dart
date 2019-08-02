@@ -7,7 +7,7 @@ class FooterController with ChangeNotifier {
   bool _footerExtended = false;
 
   /// keeps track of the widget that should be used to populate an info footer
-  Widget _footerContent;
+  Widget _footerContent = Container();
 
   /// can be used to make a footer into a widget that can change pages (its content)
   /// will notify listeners of change

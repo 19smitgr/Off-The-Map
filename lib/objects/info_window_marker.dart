@@ -9,7 +9,21 @@ import 'package:provider/provider.dart';
 
 import '../constants.dart';
 
-enum InfoWindowVisibility { VISIBLE, HIDDEN }
+class InfoWindowVisibilityController extends ChangeNotifier {
+  bool _infoWindowVisible = false;
+
+  get infoWindowVisible => _infoWindowVisible;
+  set infoWindowVisible(bool value) {
+    _infoWindowVisible = value;
+    notifyListeners();
+  }
+
+  void toggleVisibility() {
+    print('notified!');
+    _infoWindowVisible = !_infoWindowVisible;
+    notifyListeners();
+  }
+}
 
 /// includes marker and infowindow
 class InfoWindowMarker {
@@ -27,19 +41,14 @@ class InfoWindowMarker {
   // TODO: find a better way to do this exactly and make sure it works on different screen sizes
   static const offsetFromMarker = Offset(0.01, 0.002);
 
-  var infoWindowVisibilityController =
-      StreamController<InfoWindowVisibility>.broadcast();
+  InfoWindowVisibilityController infoWindowVisibilityController =
+      InfoWindowVisibilityController();
 
   /// callback on marker tap
   VoidCallback customTapCallback;
 
   InfoWindowMarker({this.infoWindow, this.place, this.customTapCallback})
       : infoWindowLatLng = getOffsetLatLng(place.latLng);
-
-  /// this will prevent memory leaks from the streamController `infoWindowVisibility`
-  void dispose() {
-    infoWindowVisibilityController.close();
-  }
 
   /// returns latlng positioned above infowindow's parentLatLng
   static LatLng getOffsetLatLng(LatLng parentLatLng) {
@@ -54,60 +63,62 @@ class InfoWindowMarker {
   static void closeAllInfoWindows() {
     for (InfoWindowMarker infoWindowMarker
         in InfoWindowMarker.infoWindowMarkers) {
-      infoWindowMarker.infoWindowVisibilityController
-          .add(InfoWindowVisibility.HIDDEN);
+      infoWindowMarker.infoWindowVisibilityController.infoWindowVisible = false;
     }
   }
 
   /// returns pair of markers that represents the infoWindowMarker
-  List<Marker> getInfoWindowMarker() {
-    return [
-      Marker(
-        point: infoWindowLatLng,
-        builder: (context) {
-          // when other marker is tapped, this will rebuild and make infowindow visible
-          return StreamBuilder(
-            initialData: InfoWindowVisibility.HIDDEN,
-            stream: infoWindowVisibilityController.stream,
-            builder: (context, snapshot) {
-              bool visible =
-                  snapshot.data == InfoWindowVisibility.VISIBLE ? true : false;
-              return Visibility(visible: visible, child: infoWindow);
-            },
-          );
-        },
-        // TODO: figure out a way to make this fit the child content.
-        // potentially after InfoWindow builds, it could pass size data back to parent
-        width: 200,
-        height: 165,
-      ),
-      Marker(
-        point: place.latLng,
-        builder: (ctx) => GestureDetector(
-              onTap: () {
-                InfoWindowMarker.closeAllInfoWindows();
-                infoWindowVisibilityController
-                    .add(InfoWindowVisibility.VISIBLE);
-                var places = Provider.of<List<Place>>(ctx);
-                
-                // TODO: Refactor because I'm sure there's a better way of doing this
-                for (Place place in places) {
-                  if (place.name == this.place.name) {
-                    Provider.of<CurrentPlaceController>(ctx).currentPlace = place;
-                  }
-                }
+  Marker getInfoWindowMarker() {
+    return Marker(
+      width:
+          400.0, // arbitrarily large so that any given infowindow can fully show up
+      height: 400.0,
+      anchorPos: AnchorPos.align(AnchorAlign.top),
+      point: place.latLng,
+      builder: (ctx) {
+        return ChangeNotifierProvider<InfoWindowVisibilityController>.value(
+          value: infoWindowVisibilityController,
+          child: Column(
+            verticalDirection: VerticalDirection.up,
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  InfoWindowMarker.closeAllInfoWindows();
 
-                if (customTapCallback != null) customTapCallback();
-              },
-              child: Container(
-                child: Icon(
-                  Icons.location_on,
-                  size: 50.0,
-                  color: kOrangeMarkerColor,
+                  infoWindowVisibilityController.toggleVisibility();
+                  var places = Provider.of<List<Place>>(ctx);
+
+                  Provider.of<CurrentPlaceController>(ctx).currentPlace = place;
+
+                  if (customTapCallback != null) customTapCallback();
+                },
+                child: Container(
+                  child: Icon(
+                    Icons.location_on,
+                    size: 50.0,
+                    color: kOrangeMarkerColor,
+                  ),
                 ),
               ),
-            ),
-      ),
-    ];
+
+              // info window will end up above the icon due to the enclosing column's vertical direction
+              Flexible(
+                child: Consumer<InfoWindowVisibilityController>(
+                  builder: (BuildContext context,
+                      InfoWindowVisibilityController
+                          infoWindowVisibilityController,
+                      Widget child) {
+                    return Visibility(
+                      visible: infoWindowVisibilityController.infoWindowVisible,
+                      child: infoWindow,
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }

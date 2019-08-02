@@ -4,6 +4,7 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:off_the_map/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:off_the_map/models/user.dart';
+import 'package:off_the_map/views/student_assignment_page.dart';
 import 'package:off_the_map/views/teacher_home.dart';
 
 class LoginPage extends StatefulWidget {

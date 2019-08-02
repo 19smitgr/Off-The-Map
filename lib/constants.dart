@@ -21,3 +21,4 @@ var kBoldText = TextStyle(
 
 final Color kVeryDarkBlue = Color(0xFF30465C);
 final Color kPurple = Color(0xFF93639A);
+final Color kLinkText = Color(0xFF0A00FF);

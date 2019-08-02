@@ -6,4 +6,11 @@ class PlaceInstructionPair {
   String instructions;
 
   PlaceInstructionPair({@required this.placeRef, @required this.instructions});
+
+  Map<String, dynamic> toJson() {
+    return {
+      'instructions': this.instructions,
+      'place': this.placeRef
+    };
+  }
 }

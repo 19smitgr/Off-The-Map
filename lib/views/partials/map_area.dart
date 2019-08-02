@@ -6,14 +6,34 @@ import 'package:off_the_map/objects/info_window_marker.dart';
 import 'package:off_the_map/objects/info_window_template_widget.dart';
 import 'package:provider/provider.dart';
 
+typedef void AcceptsLatLng(LatLng latLng);
+
+class MapAreaController {
+  LatLng center = LatLng(35.754584, -83.974536);
+  double zoom = 16.0;
+  List<Place> places = [];
+}
+
 class MapArea extends StatelessWidget {
   /// when a marker on the map is tapped, this is what will popup above the marker
   final InfoWindowTemplate infoWindowFactory;
 
+  final MapController mapController = MapController();
+  final MapAreaController mapAreaController = MapAreaController();
+
   /// callback for when the marker associated with the info window is tapped
   final VoidCallback markerCustomTapCallback;
+  final AcceptsLatLng mapTapCallback;
 
-  MapArea({@required this.infoWindowFactory, this.markerCustomTapCallback});
+  static defaultMapTapCallback(LatLng latLng) {
+    // this is kind of hacky, but I'm still not exactly sure how to provide an optional value
+    // in the constructor for a final field.
+  }
+
+  MapArea(
+      {@required this.infoWindowFactory,
+      this.markerCustomTapCallback,
+      this.mapTapCallback = defaultMapTapCallback});
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +45,13 @@ class MapArea extends StatelessWidget {
     for (Place place in places) {
       if (markerCustomTapCallback == null) {
         infoWindowMarker = InfoWindowMarker(
-            infoWindow: infoWindowFactory
-                .generateInfoWindowTemplate(place: place),
+            infoWindow:
+                infoWindowFactory.generateInfoWindowTemplate(place: place),
             place: place);
       } else {
         infoWindowMarker = InfoWindowMarker(
-            infoWindow: infoWindowFactory
-                .generateInfoWindowTemplate(place: place),
+            infoWindow:
+                infoWindowFactory.generateInfoWindowTemplate(place: place),
             place: place,
             customTapCallback: markerCustomTapCallback);
       }
@@ -41,9 +61,21 @@ class MapArea extends StatelessWidget {
     }
 
     return FlutterMap(
+      mapController: mapController,
       options: MapOptions(
-        center: LatLng(35.754584, -83.974536),
-        zoom: 16.0,
+        center: mapAreaController.center,
+        zoom: mapAreaController.zoom,
+        onTap: (LatLng latLng) {
+          print(mapController);
+
+          // mapController.move(latLng, mapAreaController.zoom);
+          mapAreaController.center = latLng;
+          mapTapCallback(latLng);
+        },
+        onPositionChanged: (MapPosition pos, bool hasGesture, bool isUserGesture) {
+          mapAreaController.zoom = pos.zoom;
+          mapAreaController.center = pos.center;
+        }
       ),
       layers: [
         TileLayerOptions(
@@ -60,7 +92,7 @@ class MapArea extends StatelessWidget {
             // an infoWindowMarker consists of the infowindow and its anchor marker
             //this adds both to the marker list
             for (InfoWindowMarker infoWindowMarker in infoWindowMarkers)
-              ...infoWindowMarker.getInfoWindowMarker(),
+              infoWindowMarker.getInfoWindowMarker(),
           ],
         ),
       ],

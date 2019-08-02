@@ -10,10 +10,10 @@ import 'package:off_the_map/models/story.dart';
 import 'package:off_the_map/models/user.dart';
 import 'package:off_the_map/objects/named_reference.dart';
 import 'package:off_the_map/objects/named_reference_list.dart';
+import 'package:off_the_map/views/create_assignment_page.dart';
 import 'package:off_the_map/views/partials/action_status.dart';
 import 'package:off_the_map/views/partials/assignment_with_options.dart';
 import 'package:off_the_map/views/place_story_page.dart';
-import 'package:off_the_map/views/student_assignment_page.dart';
 import 'package:off_the_map/views/student_complete_assignment_page.dart';
 import 'package:provider/provider.dart';
 
@@ -107,10 +107,9 @@ class TeacherAssignmentPage extends StatelessWidget {
                   try {
                     // add this class to the assignment in firestore
                     await assignment.reference.updateData({
-                      "classesAssignedTo": FieldValue.arrayUnion([{
-                        'name': classRef.name,
-                        'reference': classRef.reference
-                      }]),
+                      "classesAssignedTo": FieldValue.arrayUnion([
+                        {'name': classRef.name, 'reference': classRef.reference}
+                      ]),
                     });
 
                     Navigator.pop(context);
@@ -156,7 +155,16 @@ class TeacherAssignmentPage extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: RaisedButton(
                 color: kPurple,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return CreateAssignmentPage();
+                      },
+                    ),
+                  );
+                },
                 child: Text(
                   'Create New Assignment',
                   style: TextStyle(color: Colors.white),

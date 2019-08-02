@@ -18,9 +18,7 @@ class InfoFooter extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Flexible(
-            child: footerController.footerContent == null
-                ? child
-                : footerController.footerContent,
+            child: child
           ),
           FlatButton(
             onPressed: () {

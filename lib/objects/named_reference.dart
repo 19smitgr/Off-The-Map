@@ -7,4 +7,11 @@ class NamedReference {
   DocumentReference reference;
 
   NamedReference({@required this.name, @required this.reference});
-}
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': this.name,
+      'reference': this.reference
+    };
+  }
+} 

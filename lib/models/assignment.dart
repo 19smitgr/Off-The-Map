@@ -17,6 +17,8 @@ class Assignment {
   /// allows us to access/modify later
   DocumentReference reference;
 
+  Assignment();
+
   Assignment.fromFirestore(DocumentSnapshot doc) {
     this.name = doc['name'];
 
@@ -38,5 +40,19 @@ class Assignment {
     }
 
     this.ownerReference = doc['ownerReference'];
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': this.name,
+      'classesAssignedTo': this
+          .classesAssignedTo
+          .map((NamedReference namedRef) => namedRef.toJson()),
+      'placeToResearch': this
+          .placesToResearch
+          .map((PlaceInstructionPair pair) => pair.toJson()),
+      'generalInstructions': this.generalInstructions,
+      'ownerReference': this.ownerReference,
+    };
   }
 }
