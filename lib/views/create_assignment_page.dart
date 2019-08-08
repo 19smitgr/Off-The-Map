@@ -66,7 +66,6 @@ class _CreateAssignmentPageState extends State<CreateAssignmentPage> {
                     ),
                   ).then((val) {
                     assignment.generalInstructions = val;
-                    print(val);
                   });
                 },
                 child: Container(
@@ -137,7 +136,6 @@ class _CreateAssignmentPageState extends State<CreateAssignmentPage> {
                                     );
 
                                     assignmentPlaces.add(place);
-                                    print(place.name);
                                   });
                                 }
                               });

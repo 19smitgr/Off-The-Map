@@ -24,6 +24,7 @@ class ExploreMapPage extends StatelessWidget {
 
   void onMarkerTap() {
     footerController.extended = true;
+    print('true');
 
     footerController.replaceFooterContent(TopicList());
   }
@@ -120,6 +121,8 @@ class InfoWindowExplorePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: MediaQuery.of(context).size.width * 0.9,
+      height: MediaQuery.of(context).size.width * 0.3,
       padding: EdgeInsets.all(5.0),
       color: kOrangeMarkerColor,
       child: Column(
@@ -147,16 +150,13 @@ class InfoWindowExplorePage extends StatelessWidget {
 class TopicList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    CurrentPlaceController currentPlaceController =
-        Provider.of<CurrentPlaceController>(context);
-
     return Column(
       children: <Widget>[
-        Text(currentPlaceController.currentPlace.name, style: kHeader),
+        Text(CurrentPlaceController.currentPlace.name, style: kHeader),
         Text('Topics'),
         Flexible(
           child: StreamBuilder(
-            stream: currentPlaceController.currentPlace.getStories(),
+            stream: CurrentPlaceController.currentPlace.getStories(),
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.hasError) return Text('Error: ${snapshot.error}');
@@ -172,28 +172,31 @@ class TopicList extends StatelessWidget {
                         snapshot.data.documents[i];
                     Story story = Story.fromFirestore(document);
 
-                    if (currentPlaceController.storiesByTopic
+                    if (CurrentPlaceController.storiesByTopic
                         .containsKey(story.topic)) {
-                      currentPlaceController.storiesByTopic[story.topic]
+                      CurrentPlaceController.storiesByTopic[story.topic]
                           .add(story);
                     } else {
-                      currentPlaceController.storiesByTopic
+                      CurrentPlaceController.storiesByTopic
                           .putIfAbsent(story.topic, () => [story]);
                     }
                   }
 
                   // make listView of all topics coupled with the top story for that topic
                   return ListView.builder(
-                    itemCount: currentPlaceController.storiesByTopic.length,
+                    itemCount: CurrentPlaceController.storiesByTopic.length,
                     itemBuilder: (context, index) {
                       List<String> keys =
-                          currentPlaceController.storiesByTopic.keys.toList();
+                          CurrentPlaceController.storiesByTopic.keys.toList();
                       String topic = keys[index];
 
                       Story topStory =
-                          currentPlaceController.getTopStoryForTopic(topic);
+                          CurrentPlaceController.getTopStoryForTopic(topic);
 
-                      return StoryListItem(story: topStory);
+                      return StoryTopicButton(
+                        topic: topic,
+                        stories: CurrentPlaceController.storiesByTopic[topic],
+                      );
                     },
                   );
               }
@@ -205,10 +208,11 @@ class TopicList extends StatelessWidget {
   }
 }
 
-class StoryListItem extends StatelessWidget {
-  final Story story;
+class StoryTopicButton extends StatelessWidget {
+  final List<Story> stories;
+  final String topic;
 
-  StoryListItem({this.story});
+  StoryTopicButton({this.stories, this.topic});
 
   @override
   Widget build(BuildContext context) {
@@ -221,13 +225,22 @@ class StoryListItem extends StatelessWidget {
     return RaisedButton(
       color: purple,
       onPressed: () {
-        currentStoryController.currentStory = story;
+        // currentStoryController.currentStory = story;
 
         // change footer content to the story
-        footerController.replaceFooterContent(StoryFooterView());
+        // footerController.replaceFooterContent(StoryFooterView());
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) {
+              return PlaceStoryPage(topic: topic, stories: CurrentPlaceController.storiesByTopic[topic]);
+            },
+          ),
+        );
       },
       child: Text(
-        story.topic,
+        topic,
         style: TextStyle(color: Colors.white),
       ),
     );
@@ -237,14 +250,12 @@ class StoryListItem extends StatelessWidget {
 class StoryFooterView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    CurrentPlaceController currentPlaceController =
-        Provider.of<CurrentPlaceController>(context);
     CurrentStoryController currentStoryController =
         Provider.of<CurrentStoryController>(context);
 
     return Column(
       children: <Widget>[
-        Text(currentPlaceController.currentPlace.name, style: kHeader),
+        Text(CurrentPlaceController.currentPlace.name, style: kHeader),
         Text(currentStoryController.currentStory.topic),
         PlaceStory(
           story: currentStoryController.currentStory,
@@ -257,9 +268,8 @@ class StoryFooterView extends StatelessWidget {
                     builder: (context) {
                       return PlaceStoryPage(
                         topic: currentStoryController.currentStory.topic,
-                        stories: currentPlaceController.storiesByTopic[
+                        stories: CurrentPlaceController.storiesByTopic[
                             currentStoryController.currentStory.topic],
-                        currentPlaceController: currentPlaceController,
                       );
                     },
                   ),

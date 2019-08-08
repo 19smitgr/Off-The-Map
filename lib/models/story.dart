@@ -13,8 +13,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 /// ```
 class Story {
   /// years that a person's research may discuss
-  List<int> researchYears;
+  List<int> researchYears = [];
   String text;
+  String citation;
   DateTime dateWritten;
 
   /// We have this in both Place and Story because it connects the two conceptually
@@ -26,7 +27,7 @@ class Story {
   /// reference for this story in the database
   DocumentReference reference;
 
-  Story({this.researchYears = const [], this.text = '', this.dateWritten, this.topic = ''}) {
+  Story({this.text = '', this.dateWritten, this.topic = ''}) {
     dateWritten = DateTime.now();
   }
 
@@ -37,5 +38,6 @@ class Story {
     this.topic = doc['topic'];
     this.reference = doc.reference;
     this.placeDocRef = doc['parentPlaceRef'];
+    this.citation = doc['citation'];
   }
 }

@@ -347,6 +347,7 @@ class ViewPlaceTopics extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
+          // TODO: incredibly inefficient
           for (NamedReferenceList topicRef in place.topics)
             RaisedButton(
               onPressed: () async {
@@ -365,8 +366,8 @@ class ViewPlaceTopics extends StatelessWidget {
                       return PlaceStoryPage(
                         topic: topicRef.name,
                         stories: stories,
-                        currentPlaceController:
-                            CurrentPlaceController(currentPlace: this.place),
+                        // currentPlaceController:
+                        //     CurrentPlaceController(currentPlace: this.place),
                       );
                     },
                   ),

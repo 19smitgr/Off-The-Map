@@ -6,6 +6,7 @@ import 'package:latlong/latlong.dart';
 import 'package:off_the_map/controllers/current_place_controller.dart';
 import 'package:off_the_map/models/place.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 import '../constants.dart';
 
@@ -19,15 +20,22 @@ class InfoWindowVisibilityController extends ChangeNotifier {
   }
 
   void toggleVisibility() {
-    print('notified!');
     _infoWindowVisible = !_infoWindowVisible;
     notifyListeners();
+  }
+
+  // since the map reloads all the time, something needs to keep track of the state of all the markers
+  // we will assign each info window a UUID to look up their controller
+  static Map<String, InfoWindowVisibilityController> controllers = {};
+
+  InfoWindowVisibilityController(String placeName) {
+    controllers.addAll({placeName: this});
   }
 }
 
 /// includes marker and infowindow
 class InfoWindowMarker {
-  static List<InfoWindowMarker> infoWindowMarkers = [];
+  // static List<InfoWindowMarker> infoWindowMarkers = [];
 
   /// all InfoWindowMarkers will be associated with a Place
   Place place;
@@ -41,14 +49,25 @@ class InfoWindowMarker {
   // TODO: find a better way to do this exactly and make sure it works on different screen sizes
   static const offsetFromMarker = Offset(0.01, 0.002);
 
-  InfoWindowVisibilityController infoWindowVisibilityController =
-      InfoWindowVisibilityController();
+  InfoWindowVisibilityController infoWindowVisibilityController;
 
   /// callback on marker tap
   VoidCallback customTapCallback;
 
   InfoWindowMarker({this.infoWindow, this.place, this.customTapCallback})
-      : infoWindowLatLng = getOffsetLatLng(place.latLng);
+      : infoWindowLatLng = getOffsetLatLng(place.latLng) {
+
+    switch (InfoWindowVisibilityController.controllers[this.place.name]) {
+      case null:
+        infoWindowVisibilityController =
+            InfoWindowVisibilityController(place.name);
+        break;
+      default:
+        infoWindowVisibilityController =
+            InfoWindowVisibilityController.controllers[this.place.name];
+        break;
+    }
+  }
 
   /// returns latlng positioned above infowindow's parentLatLng
   static LatLng getOffsetLatLng(LatLng parentLatLng) {
@@ -61,13 +80,13 @@ class InfoWindowMarker {
   }
 
   static void closeAllInfoWindows() {
-    for (InfoWindowMarker infoWindowMarker
-        in InfoWindowMarker.infoWindowMarkers) {
-      infoWindowMarker.infoWindowVisibilityController.infoWindowVisible = false;
+    for (InfoWindowVisibilityController controller
+        in InfoWindowVisibilityController.controllers.values) {
+      controller.infoWindowVisible = false;
     }
   }
 
-  /// returns pair of markers that represents the infoWindowMarker
+  /// TODO: explain how this works. Is *slightly* hacky, but very explainable
   Marker getInfoWindowMarker() {
     return Marker(
       width:
@@ -83,14 +102,16 @@ class InfoWindowMarker {
             children: <Widget>[
               GestureDetector(
                 onTap: () {
+                  // this comes before us closing info windows, etc. because if customTapCallback
+                  // does something that causes setState like opening the footer, then it closes the infowindows
+                  if (customTapCallback != null) customTapCallback();
+
                   InfoWindowMarker.closeAllInfoWindows();
 
                   infoWindowVisibilityController.toggleVisibility();
                   var places = Provider.of<List<Place>>(ctx);
 
-                  Provider.of<CurrentPlaceController>(ctx).currentPlace = place;
-
-                  if (customTapCallback != null) customTapCallback();
+                  CurrentPlaceController.currentPlace = place;
                 },
                 child: Container(
                   child: Icon(
@@ -108,6 +129,7 @@ class InfoWindowMarker {
                       InfoWindowVisibilityController
                           infoWindowVisibilityController,
                       Widget child) {
+
                     return Visibility(
                       visible: infoWindowVisibilityController.infoWindowVisible,
                       child: infoWindow,

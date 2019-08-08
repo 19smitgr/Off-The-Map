@@ -12,18 +12,26 @@ import 'package:provider/provider.dart';
 
 import 'media_upload_button.dart';
 
+class TitleYearInputScreenController extends ChangeNotifier {
+  bool editingTitle = true;
+  bool editingCitation = true;
+}
+
 class TitleYearInputScreen extends StatelessWidget {
-  final TextEditingController researchYearsController = new TextEditingController();
-  final TextEditingController titleController = new TextEditingController();
-  final TitleYearInputScreenController titleYearInputScreenController = TitleYearInputScreenController();
+  final TextEditingController researchYearsController =
+      TextEditingController();
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController citationController = TextEditingController();
+  final TitleYearInputScreenController titleYearInputScreenController =
+      TitleYearInputScreenController();
+
+  final Story story;
+
+  TitleYearInputScreen({@required this.story});
 
   @override
   Widget build(BuildContext context) {
-    var currentPlaceController = Provider.of<CurrentPlaceController>(context);
-    Place place = currentPlaceController.currentPlace;
-
-    var currentStoryController = Provider.of<CurrentStoryController>(context);
-    Story story = currentStoryController.currentStory;
+    Place place = CurrentPlaceController.currentPlace;
 
     return Column(
       children: <Widget>[
@@ -32,7 +40,7 @@ class TitleYearInputScreen extends StatelessWidget {
         Flexible(
           child: ChangeNotifierProvider<TitleYearInputScreenController>.value(
             value: titleYearInputScreenController,
-                      child: ListView(
+            child: ListView(
               children: <Widget>[
                 Text('Title your findings'),
                 if (titleYearInputScreenController.editingTitle)
@@ -99,13 +107,62 @@ class TitleYearInputScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                Wrap(children: [
-                  Text(
-                    'Years Added: ',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                Wrap(
+                  children: [
+                    Text(
+                      'Years Added: ',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      story.researchYears.join(', '),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 15.0),
+                if (titleYearInputScreenController.editingCitation)
+                  Row(
+                    children: <Widget>[
+                      Flexible(
+                        child: TextField(
+                          controller: citationController,
+                          decoration: InputDecoration(
+                            labelText: 'Cite any sources you used:',
+                            hintText: 'Enter Citation',
+                          ),
+                        ),
+                      ),
+                      FlatButton(
+                        child: Text('Save', style: kAssignmentOptionStyle),
+                        onPressed: () {
+                          story.citation = citationController.text;
+
+                          if (citationController.text.length > 0) {
+                            titleYearInputScreenController.editingTitle = false;
+                          }
+                        },
+                      ),
+                    ],
                   ),
-                  Text(story.researchYears.join(', '))
-                ]),
+                if (!titleYearInputScreenController.editingCitation)
+                  Row(
+                    children: <Widget>[
+                      Text('Title: ',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      Expanded(
+                        child: Text(
+                          story.citation,
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ),
+                      FlatButton(
+                        child: Text('Edit', style: kAssignmentOptionStyle),
+                        onPressed: () {
+                          titleYearInputScreenController.editingCitation = true;
+                          citationController.text = story.citation;
+                        },
+                      ),
+                    ],
+                  ),
                 SizedBox(height: 15.0),
                 Text('Add Media:'),
                 Row(
@@ -121,7 +178,8 @@ class TitleYearInputScreen extends StatelessWidget {
                   color: Color(0xFF93639A),
                   onPressed: () {
                     // toggle whether footer is visible
-                    var footerController = Provider.of<FooterController>(context);
+                    var footerController =
+                        Provider.of<FooterController>(context);
                     footerController.extended = !footerController.extended;
 
                     InfoWindowMarker.closeAllInfoWindows();

@@ -45,19 +45,20 @@ class MapArea extends StatelessWidget {
     for (Place place in places) {
       if (markerCustomTapCallback == null) {
         infoWindowMarker = InfoWindowMarker(
-            infoWindow:
-                infoWindowFactory.generateInfoWindowTemplate(place: place),
-            place: place);
+          infoWindow:
+              infoWindowFactory.generateInfoWindowTemplate(place: place),
+          place: place,
+        );
       } else {
         infoWindowMarker = InfoWindowMarker(
-            infoWindow:
-                infoWindowFactory.generateInfoWindowTemplate(place: place),
-            place: place,
-            customTapCallback: markerCustomTapCallback);
+          infoWindow:
+              infoWindowFactory.generateInfoWindowTemplate(place: place),
+          place: place,
+          customTapCallback: markerCustomTapCallback,
+        );
       }
 
       infoWindowMarkers.add(infoWindowMarker);
-      InfoWindowMarker.infoWindowMarkers.add(infoWindowMarker);
     }
 
     return FlutterMap(
@@ -73,8 +74,8 @@ class MapArea extends StatelessWidget {
           mapTapCallback(latLng);
         },
         onPositionChanged: (MapPosition pos, bool hasGesture, bool isUserGesture) {
-          mapAreaController.zoom = pos.zoom;
-          mapAreaController.center = pos.center;
+          // mapAreaController.zoom = pos.zoom;
+          // mapAreaController.center = pos.center;
         }
       ),
       layers: [

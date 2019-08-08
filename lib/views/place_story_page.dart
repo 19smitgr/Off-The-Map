@@ -8,16 +8,15 @@ import 'package:off_the_map/views/partials/text_editor.dart';
 class PlaceStoryPage extends StatelessWidget {
   final String topic;
   final List<Story> stories;
-  final CurrentPlaceController currentPlaceController;
 
-  PlaceStoryPage({@required this.topic, @required this.stories, @required this.currentPlaceController});
+  PlaceStoryPage({@required this.topic, @required this.stories});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kGrayBackgroundColor,
       appBar: AppBar(
-        title: Text(currentPlaceController.currentPlace.name, style: kHeader),
+        title: Text(CurrentPlaceController.currentPlace.name, style: kHeader),
         backgroundColor: Color(0xFF93639A),
       ),
       body: Container(

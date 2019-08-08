@@ -14,6 +14,7 @@ class User {
   List<NamedReference> createdClasses = [];
   List<NamedReference> joinedClasses = [];
   List<NamedReference> assignmentBank = [];
+  List<NamedReference> createdStories = [];
   List<NamedReferenceList> completedAssignments = [];
 
   User({this.name});
@@ -54,6 +55,14 @@ class User {
         referenceList: map['places'].cast<DocumentReference>(),
       );
       completedAssignments.add(assignmentRef);
+    }
+
+    for (var map in doc['createdStories']) {
+      var storyRef = NamedReference(
+        name: map['name'],
+        reference: map['reference'],
+      );
+      createdStories.add(storyRef);
     }
   }
 }
