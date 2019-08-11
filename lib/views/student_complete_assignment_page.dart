@@ -1,8 +1,6 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:off_the_map/constants.dart';
 import 'package:off_the_map/controllers/current_place_controller.dart';
-import 'package:off_the_map/controllers/current_story_controller.dart';
 import 'package:off_the_map/controllers/footer_controller.dart';
 import 'package:off_the_map/models/assignment.dart';
 import 'package:off_the_map/models/place.dart';
@@ -11,10 +9,10 @@ import 'package:off_the_map/objects/info_window_marker.dart';
 import 'package:off_the_map/objects/info_window_template_widget.dart';
 import 'package:off_the_map/views/partials/info_footer.dart';
 import 'package:off_the_map/views/partials/map_area.dart';
-import 'package:off_the_map/views/partials/navigation_bar.dart';
 import 'package:off_the_map/views/partials/title_year_input_screen.dart';
 import 'package:provider/provider.dart';
 
+/// the place for a user to complete an assignment
 class StudentCompleteAssignmentPage extends StatelessWidget {
   final List<Place> places;
   final Assignment assignment;

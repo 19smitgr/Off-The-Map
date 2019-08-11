@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:latlong/latlong.dart';
 import 'package:off_the_map/constants.dart';
 import 'package:off_the_map/controllers/current_place_controller.dart';
@@ -13,6 +14,7 @@ import 'package:off_the_map/views/partials/map_area.dart';
 import 'package:off_the_map/views/partials/text_editor.dart';
 import 'package:provider/provider.dart';
 
+/// The page for a teacher to create an assignment
 class CreateAssignmentPage extends StatefulWidget {
   @override
   _CreateAssignmentPageState createState() => _CreateAssignmentPageState();
@@ -339,7 +341,8 @@ class _PlaceSelectionPageState extends State<PlaceSelectionPage> {
                     visible: footerController.extended,
                     child: Expanded(
                       child: InfoFooter(
-                        child: PlaceList(latLng: mapTapController.tappedLatLng),
+                        child: CreateNewPlace(
+                            latLng: mapTapController.tappedLatLng),
                       ),
                     ),
                   ),
@@ -475,14 +478,22 @@ class CreateNewPlace extends StatelessWidget {
             color: kPurple,
             onPressed: () {
               // create the place in Firestore
+              GeoFirePoint tappedLocation = Geoflutterfire().point(
+                latitude: this.latLng.latitude,
+                longitude: this.latLng.longitude,
+              );
+
               Firestore.instance
                   .collection('places')
-                  .add({'name': nameController.text, 'latLng': latLng});
+                  .add({'name': nameController.text, 'point': tappedLocation.data});
 
               Navigator.pop(
                   context, Place(name: nameController.text, latLng: latLng));
             },
-            child: Text('Submit'),
+            child: Text(
+              'Submit',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         ],
       ),

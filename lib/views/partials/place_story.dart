@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:off_the_map/constants.dart';
 import 'package:off_the_map/models/story.dart';
 
+/// An individual story listed under a place page
 class PlaceStory extends StatelessWidget {
   final Story story;
   final List<Widget> children;

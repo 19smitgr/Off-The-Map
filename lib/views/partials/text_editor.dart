@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path;
@@ -85,6 +84,7 @@ class FirebaseStorageImageDelagate extends ZefyrImageDelegate {
 
   @override
   Widget buildImage(BuildContext context, String imageSource) {
+    print(imageSource);
     return Image.network(imageSource);
   }
 
@@ -101,10 +101,11 @@ class FirebaseStorageImageDelagate extends ZefyrImageDelegate {
 
     StorageMetadata metadata = StorageMetadata(contentType: 'image/${path.extension(file.toString())}');
 
-    ref.putFile(file, metadata);
+    StorageUploadTask storageUploadTask = ref.putFile(file, metadata);
+    await storageUploadTask.onComplete;
 
     var url = await ref.getDownloadURL();
-
+    print(url);
     return url;
   }
 }

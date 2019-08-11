@@ -3,8 +3,9 @@ import 'package:off_the_map/constants.dart';
 import 'package:off_the_map/models/user.dart';
 import 'package:off_the_map/objects/named_reference.dart';
 import 'package:off_the_map/views/student_assignment_page.dart';
-import 'package:off_the_map/views/teacher_assignment_page.dart';
+import 'package:off_the_map/views/teacher_home.dart';
 
+/// a User's profile page. Does not yet link to their stories pages within the app.
 class ProfilePage extends StatelessWidget {
   final User user;
 
@@ -30,7 +31,7 @@ class ProfilePage extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (BuildContext context) {
-                      return TeacherAssignmentPage(user: this.user);
+                      return TeacherHome(user: this.user);
                     },
                   ),
                 );

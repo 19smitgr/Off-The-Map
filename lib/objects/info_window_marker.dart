@@ -1,12 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong/latlong.dart';
 import 'package:off_the_map/controllers/current_place_controller.dart';
 import 'package:off_the_map/models/place.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
 
 import '../constants.dart';
 
@@ -40,14 +36,8 @@ class InfoWindowMarker {
   /// all InfoWindowMarkers will be associated with a Place
   Place place;
 
-  final LatLng infoWindowLatLng;
-
   /// widget that builds the infowindow
   final Widget infoWindow;
-
-  /// trying to center infowindow
-  // TODO: find a better way to do this exactly and make sure it works on different screen sizes
-  static const offsetFromMarker = Offset(0.01, 0.002);
 
   InfoWindowVisibilityController infoWindowVisibilityController;
 
@@ -55,7 +45,7 @@ class InfoWindowMarker {
   VoidCallback customTapCallback;
 
   InfoWindowMarker({this.infoWindow, this.place, this.customTapCallback})
-      : infoWindowLatLng = getOffsetLatLng(place.latLng) {
+ {
 
     switch (InfoWindowVisibilityController.controllers[this.place.name]) {
       case null:
@@ -67,16 +57,6 @@ class InfoWindowMarker {
             InfoWindowVisibilityController.controllers[this.place.name];
         break;
     }
-  }
-
-  /// returns latlng positioned above infowindow's parentLatLng
-  static LatLng getOffsetLatLng(LatLng parentLatLng) {
-    LatLng latLng = LatLng(0, 0);
-
-    latLng.latitude = parentLatLng.latitude + offsetFromMarker.dx;
-    latLng.longitude = parentLatLng.longitude + offsetFromMarker.dy;
-
-    return latLng;
   }
 
   static void closeAllInfoWindows() {

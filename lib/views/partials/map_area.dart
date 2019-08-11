@@ -14,6 +14,7 @@ class MapAreaController {
   List<Place> places = [];
 }
 
+/// A map populated with tappable markers
 class MapArea extends StatelessWidget {
   /// when a marker on the map is tapped, this is what will popup above the marker
   final InfoWindowTemplate infoWindowFactory;

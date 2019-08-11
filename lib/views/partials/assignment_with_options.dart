@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:off_the_map/constants.dart';
 import 'package:off_the_map/models/assignment.dart';
 
+/// Used to create an assignment that has multiple links that perform a given function
 class AssignmentWithOptions extends StatelessWidget {
   final Map<String, Function> options;
   final Assignment assignment;

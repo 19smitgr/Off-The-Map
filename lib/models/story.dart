@@ -40,4 +40,15 @@ class Story {
     this.placeDocRef = doc['parentPlaceRef'];
     this.citation = doc['citation'];
   }
+
+  Map toJson() {
+    return {
+      'researchYears': researchYears,
+      'text': text,
+      'citation': citation,
+      'dateWritten': Timestamp.fromDate(dateWritten),
+      'topic': topic,
+      'parentPlaceRef': placeDocRef,
+    };
+  }
 }

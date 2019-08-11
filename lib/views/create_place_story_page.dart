@@ -1,13 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:off_the_map/constants.dart';
 import 'package:off_the_map/models/place.dart';
 import 'package:off_the_map/models/story.dart';
+import 'package:off_the_map/objects/named_reference_list.dart';
 import 'package:off_the_map/views/create_assignment_page.dart';
-import 'package:off_the_map/views/partials/media_upload_button.dart';
 import 'package:off_the_map/views/partials/text_editor.dart';
 import 'package:off_the_map/views/partials/title_year_input_screen.dart';
 import 'package:provider/provider.dart';
 
+class CreatePlaceStoryPageController {
+  Place place;
+  Story story;
+}
+
+/// the page for creating a new place+story (linked from the create button on home page)
 class CreatePlaceStoryPage extends StatefulWidget {
   @override
   _CreatePlaceStoryPageState createState() => _CreatePlaceStoryPageState();
@@ -37,16 +44,18 @@ class _CreatePlaceStoryPageState extends State<CreatePlaceStoryPage> {
             RaisedButton(
               color: kPurple,
               onPressed: () async {
-                Place place = await Navigator.push(
+                Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (BuildContext context) {
-                      return Scaffold(
-                        body: PlaceSelectionPage(),
-                      );
+                      return PlaceSelectionPage();
                     },
                   ),
-                );
+                ).then((var place) {
+                  setState(() {
+                    this.place = place;
+                  });
+                });
               },
               child: Text(
                 'Choose Place',
@@ -242,9 +251,26 @@ class _CreatePlaceStoryPageState extends State<CreatePlaceStoryPage> {
                                 const EdgeInsets.symmetric(horizontal: 8.0),
                             child: RaisedButton(
                               color: kPurple,
-                              onPressed: () {},
-                              child: Text('Submit',
-                                  style: TextStyle(color: Colors.white)),
+                              onPressed: () async {
+                                // upload story to firestore
+                                DocumentReference storyRef = await Firestore
+                                    .instance
+                                    .collection('stories')
+                                    .add(story.toJson());
+
+                                place.topics.add(
+                                  NamedReferenceList(
+                                    name: story.topic,
+                                    referenceList: [storyRef],
+                                  ),
+                                );
+
+                                place.reference.updateData(place.toJson());
+                              },
+                              child: Text(
+                                'Submit',
+                                style: TextStyle(color: Colors.white),
+                              ),
                             ),
                           ),
                         ],

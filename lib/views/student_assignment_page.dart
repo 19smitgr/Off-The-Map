@@ -9,10 +9,10 @@ import 'package:off_the_map/models/user.dart';
 import 'package:off_the_map/objects/named_reference.dart';
 import 'package:off_the_map/views/partials/action_status.dart';
 import 'package:off_the_map/views/partials/assignment_with_options.dart';
-import 'package:off_the_map/views/partials/navigation_bar.dart';
 import 'package:off_the_map/views/student_complete_assignment_page.dart';
 import 'package:provider/provider.dart';
 
+/// page to list all assignments of a student
 class StudentAssignmentPage extends StatelessWidget {
   final List<AssignmentWithOptions> assignments = [
     // AssignmentWithOptions(

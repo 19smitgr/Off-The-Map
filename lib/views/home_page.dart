@@ -11,6 +11,11 @@ import 'package:off_the_map/views/login_page.dart';
 import 'package:off_the_map/views/map_settings_page.dart';
 import 'package:off_the_map/views/profile_page.dart';
 
+/// The home page should show new stories from the map that a user chooses via the gear icon.
+/// Each story preview should link to the story's page in the app.
+/// 
+/// This page also links to a user's profile page (or log in page if not logged in),
+/// the "Explore the Map" page, and the "Create a new Place+Story" page
 class HomePage extends StatelessWidget {
   Story story = Story(
       text: 'Stuff and things',
@@ -111,7 +116,7 @@ class HomePage extends StatelessWidget {
         child: Icon(Icons.map),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Color.fromARGB(100, 255, 255, 255),
+        color: Color.fromARGB(255, 246, 246, 246),
         shape: CircularNotchedRectangle(),
         notchMargin: 4.0,
         child: Row(

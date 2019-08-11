@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:off_the_map/constants.dart';
 
+/// **No longer used.**
+/// 
+/// Originally used before finding out about AppBar which makes things infinitely easier
 class NavigationBar extends StatelessWidget {
   NavigationBar({this.showBottomPart = true});
 

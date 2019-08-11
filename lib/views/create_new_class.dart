@@ -4,6 +4,7 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:off_the_map/constants.dart';
 import 'package:off_the_map/models/user.dart';
 
+/// the page for a teacher to create a new class
 class CreateNewClassPage extends StatefulWidget {
   final User user;
 

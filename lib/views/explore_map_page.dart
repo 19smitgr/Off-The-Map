@@ -14,6 +14,7 @@ import 'package:off_the_map/views/partials/place_story.dart';
 import 'package:off_the_map/views/place_story_page.dart';
 import 'package:provider/provider.dart';
 
+/// the page for people to explore places and walking tours (walking tours not yet included)
 class ExploreMapPage extends StatelessWidget {
   final MapAreaController mapAreaController = MapAreaController();
   final CurrentPlaceController currentPlaceController =

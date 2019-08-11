@@ -8,6 +8,7 @@ import 'package:off_the_map/views/class_page.dart';
 import 'package:off_the_map/views/create_new_class.dart';
 import 'package:off_the_map/views/teacher_assignment_page.dart';
 
+/// the home page for a teacher
 class TeacherHome extends StatelessWidget {
   final Color veryDarkBlue = Color(0xFF30465C);
   final Color purple = Color(0xFF93639A);

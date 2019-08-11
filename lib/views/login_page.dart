@@ -4,9 +4,10 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:off_the_map/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:off_the_map/models/user.dart';
-import 'package:off_the_map/views/student_assignment_page.dart';
 import 'package:off_the_map/views/teacher_home.dart';
 
+/// the page to log in.
+/// Note that no sign up page exists yet
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();

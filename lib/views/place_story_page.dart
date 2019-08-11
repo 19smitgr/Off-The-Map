@@ -5,6 +5,7 @@ import 'package:off_the_map/models/story.dart';
 import 'package:off_the_map/views/partials/place_story.dart';
 import 'package:off_the_map/views/partials/text_editor.dart';
 
+/// the page that would list all stories associated with a particular place's topic (Place > Topics > Stories)
 class PlaceStoryPage extends StatelessWidget {
   final String topic;
   final List<Story> stories;

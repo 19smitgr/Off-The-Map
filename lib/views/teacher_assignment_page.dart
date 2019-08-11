@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:off_the_map/constants.dart';
 import 'package:off_the_map/controllers/action_status_controller.dart';
-import 'package:off_the_map/controllers/current_place_controller.dart';
 import 'package:off_the_map/models/assignment.dart';
 import 'package:off_the_map/models/class.dart';
 import 'package:off_the_map/models/place.dart';
@@ -17,6 +16,7 @@ import 'package:off_the_map/views/place_story_page.dart';
 import 'package:off_the_map/views/student_complete_assignment_page.dart';
 import 'package:provider/provider.dart';
 
+/// the page to list all assignments and their associated options
 class TeacherAssignmentPage extends StatelessWidget {
   final User user;
   final ActionStatusController actionStatusController =
@@ -70,7 +70,7 @@ class TeacherAssignmentPage extends StatelessWidget {
         );
       },
       'Preview': (Assignment assignment, BuildContext context) async {
-        // TODO: soooo inefficient
+        // TODO: inefficient
         QuerySnapshot placeSnap = await Firestore.instance
             .collection('places')
             .where('assignmentRefs', arrayContains: {

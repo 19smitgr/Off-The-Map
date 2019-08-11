@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:off_the_map/constants.dart';
 import 'package:off_the_map/controllers/current_place_controller.dart';
-import 'package:off_the_map/controllers/current_story_controller.dart';
 import 'package:off_the_map/controllers/footer_controller.dart';
-import 'package:off_the_map/controllers/title_year_input_screen_controller.dart';
 import 'package:off_the_map/models/place.dart';
 import 'package:off_the_map/models/story.dart';
 import 'package:off_the_map/objects/info_window_marker.dart';
@@ -17,6 +15,7 @@ class TitleYearInputScreenController extends ChangeNotifier {
   bool editingCitation = true;
 }
 
+/// the form to input information about a new story.
 class TitleYearInputScreen extends StatelessWidget {
   final TextEditingController researchYearsController =
       TextEditingController();

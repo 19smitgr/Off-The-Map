@@ -4,6 +4,7 @@ import 'package:off_the_map/controllers/media_upload_button_controller.dart';
 
 typedef Widget BuildMediaView(BuildContext context);
 
+/// a button that can be used to upload media (i.e. text, audio, images, video, etc.)
 class MediaUploadButton extends StatelessWidget {
   final IconData iconData;
   final String caption;

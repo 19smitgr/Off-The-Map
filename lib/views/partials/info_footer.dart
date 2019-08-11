@@ -3,6 +3,7 @@ import 'package:off_the_map/constants.dart';
 import 'package:off_the_map/controllers/footer_controller.dart';
 import 'package:provider/provider.dart';
 
+/// A simple footer that takes a child widget
 class InfoFooter extends StatelessWidget {
   final Widget child;
 

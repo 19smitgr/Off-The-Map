@@ -3,6 +3,7 @@ import 'package:off_the_map/constants.dart';
 import 'package:off_the_map/models/class.dart';
 import 'package:off_the_map/objects/named_reference.dart';
 
+/// The page for a teacher's class.
 class ClassPage extends StatelessWidget {
   final Class schoolClass;
 

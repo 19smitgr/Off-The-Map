@@ -3,6 +3,7 @@ import 'package:off_the_map/controllers/action_status_controller.dart';
 import 'package:provider/provider.dart';
 
 /// consumes ActionStatusController
+/// Used to show whether an action was successful or not
 class ActionStatus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

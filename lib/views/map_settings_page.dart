@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:off_the_map/constants.dart';
 
+/// the page to change which map a user's "feed" comes from. 
+/// The "feed" are the new stories that are written near a user's location.
+/// This is also where people would be able to pay for the ability to create private maps, 
+/// although this is not in the app currently
 class MapSettingsPage extends StatefulWidget {
   @override
   _MapSettingsPageState createState() => _MapSettingsPageState();
