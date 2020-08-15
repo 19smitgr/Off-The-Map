@@ -4,6 +4,9 @@ Off the Map is an app that allows people to write and maintain information about
 
 Right now, the ability to create and write about places as well as the teacher/student functionality is almost complete. However, most of the tools to create walking tours and private maps are not complete.
 
+![GIF of the Create Page](https://github.com/garrrettt/Off-The-Map/blob/master/screenshots/Create-Page.gif)
+![GIF of the Home and Map Pages](https://github.com/garrrettt/Off-The-Map/blob/master/screenshots/Home-and-Map-Page.gif)
+
 ## Getting Started
 
 For developers new to Dart that have programmed in Java, check out the tutorial: [From Java to Dart](https://codelabs.developers.google.com/codelabs/from-java-to-dart/)
